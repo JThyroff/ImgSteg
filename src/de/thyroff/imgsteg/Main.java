@@ -41,11 +41,11 @@ public class Main {
                 if (alpha == c) {
                     m = new MyPosition(x, y, Channel.ALPHA, (short) 0);
                 } else if (red == c) {
-                    m = new MyPosition(x, y, Channel.R, (short) 0);
+                    m = new MyPosition(x, y, Channel.RED, (short) 0);
                 } else if (green == c) {
-                    m = new MyPosition(x, y, Channel.G, (short) 0);
+                    m = new MyPosition(x, y, Channel.GREEN, (short) 0);
                 } else if (blue == c) {
-                    m = new MyPosition(x, y, Channel.B, (short) 0);
+                    m = new MyPosition(x, y, Channel.BLUE, (short) 0);
                 }
 
                 if (m != null) {
@@ -61,16 +61,16 @@ public class Main {
                 int greenDiff = Math.abs(c - green);
                 int blueDiff = Math.abs(c - blue);
 
-                Channel channel = Channel.B;
+                Channel channel = Channel.BLUE;
                 short localOffset = (short) (c - blue);
                 if (alphaDiff <= redDiff && alphaDiff <= greenDiff && alphaDiff <= blueDiff) {
                     channel = Channel.ALPHA;
                     localOffset = (short) (c - alpha);
                 } else if (redDiff <= alphaDiff && redDiff <= greenDiff && redDiff <= blueDiff) {
-                    channel = Channel.R;
+                    channel = Channel.RED;
                     localOffset = (short) (c - red);
                 } else if (greenDiff <= alphaDiff && greenDiff <= redDiff && greenDiff <= blueDiff) {
-                    channel = Channel.G;
+                    channel = Channel.GREEN;
                     localOffset = (short) (c - green);
                 }
 
@@ -99,11 +99,16 @@ public class Main {
     }
 
     private static void writeImage(String absolutePath, LinkedList<MyPosition> list) {
-        BufferedImage bi = new BufferedImage(list.size(), 1, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage(list.size(), 2, BufferedImage.TYPE_INT_ARGB);
         for (int x = 0; x < list.size(); x++) {
             MyPosition myPosition = list.get(x);
-            int rgb = 0;
-            bi.setRGB(x, 1, rgb);
+            bi.setRGB(x, 1, myPosition.x + myPosition.y << 8);
+            bi.setRGB(x, 2, myPosition.channel.toInt() + myPosition.offset << 8);
+        }
+        try {
+            ImageIO.write(bi, "PNG", new File(absolutePath));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -123,6 +128,7 @@ public class Main {
             File selectedFile = null;
             if (ans == JFileChooser.APPROVE_OPTION) {
                 selectedFile = chooser.getSelectedFile();
+                System.out.println("Selected File: " + selectedFile.getAbsolutePath());
             } else {
                 JOptionPane.showMessageDialog(null, "Choose a png file.");
                 System.exit(1);

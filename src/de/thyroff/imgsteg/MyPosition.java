@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class MyPosition {
     short x, y;
-    Channel c;
+    Channel channel;
     short offset;
 
-    public MyPosition(short x, short y, Channel c, short offset) {
+    public MyPosition(short x, short y, Channel channel, short offset) {
         this.x = x;
         this.y = y;
-        this.c = c;
+        this.channel = channel;
         this.offset = offset;
     }
 
@@ -22,12 +22,12 @@ public class MyPosition {
         return x == that.x &&
                 y == that.y &&
                 offset == that.offset &&
-                c == that.c;
+                channel == that.channel;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, c, offset);
+        return Objects.hash(x, y, channel, offset);
     }
 
     public short getX() {
@@ -46,12 +46,12 @@ public class MyPosition {
         this.y = y;
     }
 
-    public Channel getC() {
-        return c;
+    public Channel getChannel() {
+        return channel;
     }
 
-    public void setC(Channel c) {
-        this.c = c;
+    public void setChannel(Channel channel) {
+        this.channel = channel;
     }
 
     public short getOffset() {
