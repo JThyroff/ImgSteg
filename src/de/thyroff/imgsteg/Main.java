@@ -26,7 +26,7 @@ public class Main {
     private static MyPosition searchBestPos(BufferedImage image, char c) {
         MyPosition bestPoint = null;
         for (short x = 0; x < image.getWidth(); x++) {
-            for (short y = 0; y < image.getHeight(); x++) {
+            for (short y = 0; y < image.getHeight(); y++) {
                 int rgb = image.getRGB(x, y);
                 int alpha = (rgb >> 24) & 0xff;
                 int red = (rgb >> 16) & 0xff;
@@ -92,30 +92,50 @@ public class Main {
             for (char c : msg.toCharArray()) {
                 list.add(searchBestPos(image, c));
             }
-            writeImage(file.getAbsolutePath(), list);
+            writeImage(file.getParent(), list);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void writeImage(String absolutePath, LinkedList<MyPosition> list) {
+    private static void writeImage(String path, LinkedList<MyPosition> list) {
         BufferedImage bi = new BufferedImage(list.size(), 2, BufferedImage.TYPE_INT_ARGB);
         for (int x = 0; x < list.size(); x++) {
             MyPosition myPosition = list.get(x);
-            bi.setRGB(x, 1, myPosition.x + myPosition.y << 8);
-            bi.setRGB(x, 2, myPosition.channel.toInt() + myPosition.offset << 8);
+            bi.setRGB(x, 0, myPosition.x + myPosition.y << 8);
+            bi.setRGB(x, 1, myPosition.channel.toInt() + myPosition.offset << 8);
         }
         try {
-            ImageIO.write(bi, "PNG", new File(absolutePath));
+            ImageIO.write(bi, "PNG", new File(path + "/key.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
+    private static void reveal(File selectedFile, File key) {
+        try {
+            BufferedImage image = ImageIO.read(selectedFile);
+            BufferedImage keyImg = ImageIO.read(key);
+
+            StringBuilder sb = new StringBuilder();
+            for (int x = 0; x < keyImg.getWidth(); x++) {
+                int posYX = keyImg.getRGB(x, 0);
+                int offsetChannel = keyImg.getRGB(x, 1);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static char getChar(BufferedImage image, MyPosition pos) {
+
+    }
+
     public static void main(String[] args) {
         if (args.length > 0) {
-            if (args.length == 1) { // show help
+            if (args.length == 1) { // show some help
                 printHelp();
             } else if (args.length == 2) { // execute in cmd mode
                 String path = args[0];
@@ -123,20 +143,33 @@ public class Main {
                 System.err.println("not implemented yet.");
             }
         } else { // show dialogs for user input
-            JFileChooser chooser = new JFileChooser();
-            int ans = chooser.showOpenDialog(null);
-            File selectedFile = null;
-            if (ans == JFileChooser.APPROVE_OPTION) {
-                selectedFile = chooser.getSelectedFile();
+            int mode = JOptionPane.showOptionDialog(null, "hide or reveal?", "Select Mode", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null,
+                    new String[]{"hide", "reveal"}, "hide");
+
+            System.out.println("Selected mode: " + mode);
+
+            if (mode == 0) {//hide
+                JFileChooser chooser = new JFileChooser();
+                chooser.showOpenDialog(null);
+                File selectedFile = chooser.getSelectedFile();
                 System.out.println("Selected File: " + selectedFile.getAbsolutePath());
-            } else {
-                JOptionPane.showMessageDialog(null, "Choose a png file.");
-                System.exit(1);
+
+                String msg = JOptionPane.showInputDialog("Type Message you want to hide: ");
+
+                hide(selectedFile, msg);
+            } else { //reveal
+                JFileChooser chooser = new JFileChooser();
+                chooser.showOpenDialog(null);
+                File selectedFile = chooser.getSelectedFile();
+
+                JFileChooser keyChooser = new JFileChooser();
+                keyChooser.showOpenDialog(null);
+                File key = keyChooser.getSelectedFile();
+
+                reveal(selectedFile, key);
             }
-
-            String msg = JOptionPane.showInputDialog("Type Message you want to hide: ");
-
-            hide(selectedFile, msg);
         }
+
     }
 }
