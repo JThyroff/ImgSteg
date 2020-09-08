@@ -2,12 +2,12 @@ package de.thyroff.imgsteg;
 
 import java.util.Objects;
 
-public class MyClass {
-    int x, y;
+public class MyPosition {
+    short x, y;
     Channel c;
-    int offset;
+    short offset;
 
-    public MyClass(int x, int y, Channel c, int offset) {
+    public MyPosition(short x, short y, Channel c, short offset) {
         this.x = x;
         this.y = y;
         this.c = c;
@@ -17,12 +17,12 @@ public class MyClass {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MyClass)) return false;
-        MyClass myClass = (MyClass) o;
-        return x == myClass.x &&
-                y == myClass.y &&
-                offset == myClass.offset &&
-                c == myClass.c;
+        if (!(o instanceof MyPosition)) return false;
+        MyPosition that = (MyPosition) o;
+        return x == that.x &&
+                y == that.y &&
+                offset == that.offset &&
+                c == that.c;
     }
 
     @Override
@@ -30,19 +30,19 @@ public class MyClass {
         return Objects.hash(x, y, c, offset);
     }
 
-    public int getX() {
+    public short getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(short x) {
         this.x = x;
     }
 
-    public int getY() {
+    public short getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(short y) {
         this.y = y;
     }
 
@@ -54,11 +54,11 @@ public class MyClass {
         this.c = c;
     }
 
-    public int getOffset() {
+    public short getOffset() {
         return offset;
     }
 
-    public void setOffset(int offset) {
+    public void setOffset(short offset) {
         this.offset = offset;
     }
 }

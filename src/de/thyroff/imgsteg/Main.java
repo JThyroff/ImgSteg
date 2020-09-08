@@ -5,10 +5,11 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Main {
 
-    public static void printHelp() {
+    private static void printHelp() {
         System.out.println("-------------------");
         System.out.println("This program hides a given ASCII String in a given Image and returns another Image as key for un-hiding.");
         System.out.println("If program is used in commandline both arguments are mandatory.");
@@ -22,10 +23,10 @@ public class Main {
      * @param c     the char to hide
      * @return the best location where the char can be hidden
      */
-    public static MyClass searchBestPos(BufferedImage image, char c) {
-        MyClass bestPoint = null;
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); x++) {
+    private static MyPosition searchBestPos(BufferedImage image, char c) {
+        MyPosition bestPoint = null;
+        for (short x = 0; x < image.getWidth(); x++) {
+            for (short y = 0; y < image.getHeight(); x++) {
                 int rgb = image.getRGB(x, y);
                 int alpha = (rgb >> 24) & 0xff;
                 int red = (rgb >> 16) & 0xff;
@@ -36,15 +37,15 @@ public class Main {
                 ////////////////////////////// test whether location is suitable ///////////////
                 ////////////////////////////////////////////////////////////////////////////////
 
-                MyClass m = null;
+                MyPosition m = null;
                 if (alpha == c) {
-                    m = new MyClass(x, y, Channel.ALPHA, 0);
+                    m = new MyPosition(x, y, Channel.ALPHA, (short) 0);
                 } else if (red == c) {
-                    m = new MyClass(x, y, Channel.R, 0);
+                    m = new MyPosition(x, y, Channel.R, (short) 0);
                 } else if (green == c) {
-                    m = new MyClass(x, y, Channel.G, 0);
+                    m = new MyPosition(x, y, Channel.G, (short) 0);
                 } else if (blue == c) {
-                    m = new MyClass(x, y, Channel.B, 0);
+                    m = new MyPosition(x, y, Channel.B, (short) 0);
                 }
 
                 if (m != null) {
@@ -61,21 +62,21 @@ public class Main {
                 int blueDiff = Math.abs(c - blue);
 
                 Channel channel = Channel.B;
-                int localOffset = c - blue;
+                short localOffset = (short) (c - blue);
                 if (alphaDiff <= redDiff && alphaDiff <= greenDiff && alphaDiff <= blueDiff) {
                     channel = Channel.ALPHA;
-                    localOffset = c - alpha;
+                    localOffset = (short) (c - alpha);
                 } else if (redDiff <= alphaDiff && redDiff <= greenDiff && redDiff <= blueDiff) {
                     channel = Channel.R;
-                    localOffset = c - red;
+                    localOffset = (short) (c - red);
                 } else if (greenDiff <= alphaDiff && greenDiff <= redDiff && greenDiff <= blueDiff) {
                     channel = Channel.G;
-                    localOffset = c - green;
+                    localOffset = (short) (c - green);
                 }
 
                 //this location is not suitable -> compare with best point
                 if (bestPoint == null || localOffset < bestPoint.offset) { //overwrite best point
-                    bestPoint = new MyClass(x, y, channel, localOffset);
+                    bestPoint = new MyPosition(x, y, channel, localOffset);
                 }
             }
         }
@@ -84,14 +85,25 @@ public class Main {
     }
 
 
-    public static void hide(File file, String msg) {
+    private static void hide(File file, String msg) {
         try {
             BufferedImage image = ImageIO.read(file);
+            LinkedList<MyPosition> list = new LinkedList<>();
             for (char c : msg.toCharArray()) {
-
+                list.add(searchBestPos(image, c));
             }
+            writeImage(file.getAbsolutePath(), list);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void writeImage(String absolutePath, LinkedList<MyPosition> list) {
+        BufferedImage bi = new BufferedImage(list.size(), 1, BufferedImage.TYPE_INT_ARGB);
+        for (int x = 0; x < list.size(); x++) {
+            MyPosition myPosition = list.get(x);
+            int rgb = 0;
+            bi.setRGB(x, 1, rgb);
         }
     }
 
