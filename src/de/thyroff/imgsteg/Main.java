@@ -11,10 +11,11 @@ public class Main {
 
     private static void printHelp() {
         System.out.println("-------------------");
-        System.out.println("This program hides a given ASCII String in a given Image and returns another Image as key for un-hiding.");
-        System.out.println("If program is used in commandline both arguments are mandatory.");
-        System.out.println("Argument 1 (optional) : Path to Image");
+        System.out.println("This program hides a given ASCII String in a given Image and returns another Image as key for revealing.");
+        System.out.println("If program is used in commandline all arguments are mandatory.");
+        System.out.println("Argument 1 (optional) : Mode -> h(ide) or r(eveal)");
         System.out.println("Argument 2 (optional) : String to hide in the Image");
+        System.out.println("Argument 3 (optional) : String to key or String to hide (dependent from chosen mode)");
         System.out.println("-------------------");
     }
 
@@ -75,7 +76,7 @@ public class Main {
                 }
 
                 //this location is not suitable -> compare with best point
-                if (bestPoint == null || localOffset < bestPoint.offset) { //overwrite best point
+                if (bestPoint == null || Math.abs(localOffset) < Math.abs(bestPoint.offset)) { //overwrite best point
                     bestPoint = new MyPosition(x, y, channel, localOffset);
                 }
             }
@@ -102,8 +103,8 @@ public class Main {
         BufferedImage bi = new BufferedImage(list.size(), 2, BufferedImage.TYPE_INT_ARGB);
         for (int x = 0; x < list.size(); x++) {
             MyPosition myPosition = list.get(x);
-            bi.setRGB(x, 0, myPosition.x + myPosition.y << 8);
-            bi.setRGB(x, 1, myPosition.channel.toInt() + myPosition.offset << 8);
+            bi.setRGB(x, 0, myPosition.x + (myPosition.y << 16));
+            bi.setRGB(x, 1, myPosition.channel.toInt() + (myPosition.offset << 16));
         }
         try {
             ImageIO.write(bi, "PNG", new File(path + "/key.png"));
@@ -113,7 +114,7 @@ public class Main {
     }
 
 
-    private static void reveal(File selectedFile, File key) {
+    private static String reveal(File selectedFile, File key) {
         try {
             BufferedImage image = ImageIO.read(selectedFile);
             BufferedImage keyImg = ImageIO.read(key);
@@ -124,27 +125,59 @@ public class Main {
                 int offsetChannel = keyImg.getRGB(x, 1);
 
                 short x_coord = (short) (posYX);
-                short y_coord = (short) (posYX >> 8);
-                short offset = (short) (offsetChannel >> 8);
-                sb.append(getChar(image, new MyPosition(x_coord, y_coord, Channel.toChannel(offsetChannel), offset)));
+                short y_coord = (short) (posYX >> 16);
+                short offset = (short) (offsetChannel >> 16);
+                sb.append(getChar(image, new MyPosition(x_coord, y_coord, Channel.toChannel((short) offsetChannel), offset)));
             }
+            return sb.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private static char getChar(BufferedImage image, MyPosition pos) {
-        return ' ';
+        int rgb = image.getRGB(pos.getX(), pos.getY());
+        int alpha = (rgb >> 24) & 0xff;
+        int red = (rgb >> 16) & 0xff;
+        int green = (rgb >> 8) & 0xff;
+        int blue = rgb & 0xff;
+
+        switch (pos.channel) {
+
+            case ALPHA -> {
+                return (char) (alpha + pos.offset);
+            }
+            case RED -> {
+                return (char) (red + pos.offset);
+            }
+            case GREEN -> {
+                return (char) (green + pos.offset);
+            }
+            case BLUE -> {
+                return (char) (blue + pos.offset);
+            }
+            default -> {
+                return ' ';
+            }
+        }
     }
 
     public static void main(String[] args) {
         if (args.length > 0) {
-            if (args.length == 1) { // show some help
+            if (args.length == 3) { // execute in cmd mode
+                String mode = args[0];
+                String file = args[1];
+                String msg = args[2];
+                if (mode.equalsIgnoreCase("h") || mode.equalsIgnoreCase("hide")) {
+                    hide(new File(file), msg);
+                } else if (mode.equalsIgnoreCase("r") || mode.equalsIgnoreCase("reveal")) {
+                    System.out.println(reveal(new File(file), new File(msg)));
+                } else {
+                    printHelp();
+                }
+            } else {// show some help
                 printHelp();
-            } else if (args.length == 2) { // execute in cmd mode
-                String path = args[0];
-                String msg = args[1];
-                System.err.println("not implemented yet.");
             }
         } else { // show dialogs for user input
             int mode = JOptionPane.showOptionDialog(null, "hide or reveal?", "Select Mode", JOptionPane.YES_NO_CANCEL_OPTION,
@@ -153,8 +186,8 @@ public class Main {
 
             System.out.println("Selected mode: " + mode);
 
+            JFileChooser chooser = new JFileChooser();
             if (mode == 0) {//hide
-                JFileChooser chooser = new JFileChooser();
                 chooser.showOpenDialog(null);
                 File selectedFile = chooser.getSelectedFile();
                 System.out.println("Selected File: " + selectedFile.getAbsolutePath());
@@ -163,15 +196,14 @@ public class Main {
 
                 hide(selectedFile, msg);
             } else { //reveal
-                JFileChooser chooser = new JFileChooser();
-                chooser.showOpenDialog(null);
+                chooser.showDialog(null, "image");
                 File selectedFile = chooser.getSelectedFile();
 
                 JFileChooser keyChooser = new JFileChooser();
-                keyChooser.showOpenDialog(null);
+                keyChooser.showDialog(null, "key");
                 File key = keyChooser.getSelectedFile();
 
-                reveal(selectedFile, key);
+                JOptionPane.showMessageDialog(null, "The revealed text is: " + reveal(selectedFile, key));
             }
         }
 

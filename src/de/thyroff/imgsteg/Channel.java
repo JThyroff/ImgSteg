@@ -25,10 +25,10 @@ public enum Channel {
                 return 1;
             }
             case GREEN -> {
-                return 3;
+                return 2;
             }
             case BLUE -> {
-                return 4;
+                return 3;
             }
         }
         return -1;
