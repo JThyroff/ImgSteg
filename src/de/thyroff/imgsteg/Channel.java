@@ -6,6 +6,16 @@ public enum Channel {
     GREEN,
     BLUE;
 
+    public static Channel toChannel(int c) {
+        return switch (c) {
+            case 0 -> ALPHA;
+            case 1 -> RED;
+            case 2 -> GREEN;
+            case 3 -> BLUE;
+            default -> null;
+        };
+    }
+
     int toInt() {
         switch (this) {
             case ALPHA -> {

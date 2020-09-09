@@ -123,6 +123,10 @@ public class Main {
                 int posYX = keyImg.getRGB(x, 0);
                 int offsetChannel = keyImg.getRGB(x, 1);
 
+                short x_coord = (short) (posYX);
+                short y_coord = (short) (posYX >> 8);
+                short offset = (short) (offsetChannel >> 8);
+                sb.append(getChar(image, new MyPosition(x_coord, y_coord, Channel.toChannel(offsetChannel), offset)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,7 +134,7 @@ public class Main {
     }
 
     private static char getChar(BufferedImage image, MyPosition pos) {
-
+        return ' ';
     }
 
     public static void main(String[] args) {
