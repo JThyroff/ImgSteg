@@ -1,0 +1,3 @@
+[submodule "RandomIterator"]
+	path = RandomIterator
+	url = https://github.com/JThyroff/RandomIterator.git
