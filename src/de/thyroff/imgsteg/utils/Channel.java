@@ -1,4 +1,4 @@
-package de.thyroff.imgsteg;
+package de.thyroff.imgsteg.utils;
 
 public enum Channel {
     ALPHA,
@@ -16,7 +16,7 @@ public enum Channel {
         };
     }
 
-    int toInt() {
+    public int toInt() {
         switch (this) {
             case ALPHA -> {
                 return 0;

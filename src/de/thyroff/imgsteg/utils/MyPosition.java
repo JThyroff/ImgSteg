@@ -1,4 +1,4 @@
-package de.thyroff.imgsteg;
+package de.thyroff.imgsteg.utils;
 
 import java.util.Objects;
 
