@@ -108,9 +108,10 @@ public class Hider {
         String name = keyFile.getName();
         int pixelIndex = Math.abs(name.hashCode()) % prod;
 
-
         int size = list.size();
 
+        int rgb = image.getRGB(pixelIndex % width, pixelIndex / width);
+        
 
         while (!list.isEmpty()) {
             //image.getRGB()

@@ -16,4 +16,19 @@ public class ARGB {
     public static int getAlpha(int argb) {
         return (argb >> 24) & 0xff;
     }
+
+    public static int toARGB(int alpha, int red, int green, int blue) {
+        int toReturn = 0;
+        toReturn = (short) alpha << 24;
+        toReturn += (short) red << 16;
+        toReturn += (short) green << 8;
+        toReturn += (short) blue;
+        return toReturn;
+    }
+
+    public static int toARGB(int red, int green, int blue) {
+        return toARGB(255, red, green, blue);
+    }
+
+
 }
