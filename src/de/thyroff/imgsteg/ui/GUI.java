@@ -3,8 +3,8 @@ package de.thyroff.imgsteg.ui;
 import javax.swing.*;
 import java.io.File;
 
-import static de.thyroff.imgsteg.Hider.hide;
-import static de.thyroff.imgsteg.Revealer.reveal;
+import static de.thyroff.imgsteg.legacy.HiderLegacy.hide;
+import static de.thyroff.imgsteg.legacy.RevealerLegacy.reveal;
 
 public class GUI {
     JFileChooser chooser = new JFileChooser();

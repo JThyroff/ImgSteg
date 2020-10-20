@@ -1,4 +1,4 @@
-package de.thyroff.imgsteg;
+package de.thyroff.imgsteg.legacy;
 
 import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
@@ -6,11 +6,10 @@ import de.thyroff.imgsteg.utils.MyPosition;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class Hider {
+public class HiderLegacy {
 
     /**
      * @param image the image
@@ -78,42 +77,34 @@ public class Hider {
         return bestPoint;
     }
 
-    public static void hide(File file, File keyFile, File msg) {
+    public static void hide(File file, String msg) {
         try {
             BufferedImage image = ImageIO.read(file);
             LinkedList<MyPosition> list = new LinkedList<>();
-            FileInputStream msgIs = new FileInputStream(msg);
-
-            byte bytes[] = new byte[(int) msg.length()];
-            /*for (char c : msg.toCharArray()) {
+            for (char c : msg.toCharArray()) {
                 list.add(searchBestPos(image, c));
-            }*/
-            writeKeyIntoImage(keyFile, list);
+            }
+            writeImage(file.getParent(), list);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * @param keyFile Path to the Image where the Positions shall be hidden
-     * @param list    the list of the Positions
+     * @param path Path to the location where the key will be stored
+     * @param list the list of positions which will be stored in the key
      */
-    private static void writeKeyIntoImage(File keyFile, LinkedList<MyPosition> list) throws IOException {
-        BufferedImage image = ImageIO.read(keyFile);
-
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int prod = width * height;
-
-        String name = keyFile.getName();
-        int pixelIndex = Math.abs(name.hashCode()) % prod;
-
-
-        int size = list.size();
-
-
-        while (!list.isEmpty()) {
-            //image.getRGB()
+    private static void writeImage(String path, LinkedList<MyPosition> list) {
+        BufferedImage bi = new BufferedImage(list.size(), 2, BufferedImage.TYPE_INT_ARGB);
+        for (int x = 0; x < list.size(); x++) {
+            MyPosition myPosition = list.get(x);
+            bi.setRGB(x, 0, myPosition.getX() + (myPosition.getY() << 16));
+            bi.setRGB(x, 1, myPosition.getChannel().toInt() + (myPosition.getOffset() << 16));
+        }
+        try {
+            ImageIO.write(bi, "PNG", new File(path + "/key.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

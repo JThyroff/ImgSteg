@@ -2,8 +2,8 @@ package de.thyroff.imgsteg.ui;
 
 import java.io.File;
 
-import static de.thyroff.imgsteg.Hider.hide;
-import static de.thyroff.imgsteg.Revealer.reveal;
+import static de.thyroff.imgsteg.legacy.HiderLegacy.hide;
+import static de.thyroff.imgsteg.legacy.RevealerLegacy.reveal;
 
 public class CUI extends UI {
     public CUI(String[] args) {
