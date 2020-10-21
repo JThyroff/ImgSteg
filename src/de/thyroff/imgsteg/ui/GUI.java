@@ -35,9 +35,9 @@ public class GUI {
         ///// hide or reveal ? /////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        int mode = JOptionPane.showOptionDialog(null, "hide or reveal?", "Select Mode", JOptionPane.YES_NO_CANCEL_OPTION,
+        int mode = JOptionPane.showOptionDialog(null, "Hide or reveal?", "Select Mode", JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.WARNING_MESSAGE, null,
-                new String[]{"hide", "reveal"}, "hide");
+                new String[]{"Hide", "Reveal"}, "Hide");
 
         System.out.println("Selected mode: " + mode);
 

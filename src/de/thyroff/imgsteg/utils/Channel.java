@@ -33,4 +33,24 @@ public enum Channel {
         }
         return -1;
     }
+
+    public boolean[] toBoolean() {
+        boolean[] b = new boolean[2];
+        switch (this) {
+            case ALPHA -> {
+
+            }
+            case RED -> {
+                b[1] = true;
+            }
+            case GREEN -> {
+                b[0] = true;
+            }
+            case BLUE -> {
+                b[0] = true;
+                b[1] = true;
+            }
+        }
+        return b;
+    }
 }

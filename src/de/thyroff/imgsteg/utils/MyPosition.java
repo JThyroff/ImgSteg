@@ -3,9 +3,9 @@ package de.thyroff.imgsteg.utils;
 import java.util.Objects;
 
 public class MyPosition {
-    short x, y;
-    Channel channel;
-    short offset;
+    private short x, y;
+    private Channel channel;
+    private short offset;
 
     public MyPosition(short x, short y, Channel channel, short offset) {
         this.x = x;

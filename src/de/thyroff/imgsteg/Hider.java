@@ -1,5 +1,7 @@
 package de.thyroff.imgsteg;
 
+import de.thyroff.imgsteg.utils.ARGB;
+import de.thyroff.imgsteg.utils.BitBuffer;
 import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
 
@@ -8,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Hider {
 
@@ -81,7 +83,7 @@ public class Hider {
     public static void hide(File file, File keyFile, File msg) {
         try {
             BufferedImage image = ImageIO.read(file);
-            LinkedList<MyPosition> list = new LinkedList<>();
+            ArrayList<MyPosition> list = new ArrayList<>();
             FileInputStream msgIs = new FileInputStream(msg);
 
             byte bytes[] = new byte[(int) msg.length()];
@@ -98,23 +100,50 @@ public class Hider {
      * @param keyFile Path to the Image where the Positions shall be hidden
      * @param list    the list of the Positions
      */
-    private static void writeKeyIntoImage(File keyFile, LinkedList<MyPosition> list) throws IOException {
+    private static void writeKeyIntoImage(File keyFile, ArrayList<MyPosition> list) throws IOException {
         BufferedImage image = ImageIO.read(keyFile);
 
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int prod = width * height;
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final int prod = width * height;
 
-        String name = keyFile.getName();
+        final int size = list.size();
+
+        ////////////////////////////////////////////////////////////////////////////
+        ///////   fill buffer    ///////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        BitBuffer bitBuffer = new BitBuffer();
+        bitBuffer.add(size);
+        bitBuffer.add(list);
+
+        ////////////////////////////////////////////////////////////////////////////
+        ///////    buffer filled     ///////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        final String name = keyFile.getName();
         int pixelIndex = Math.abs(name.hashCode()) % prod;
 
-        int size = list.size();
+        int argb = -1;
+        int x = -1;
+        int y = -1;
+        int alpha = -1;
+        int red = -1;
+        int green = -1;
+        int blue = -1;
 
-        int rgb = image.getRGB(pixelIndex % width, pixelIndex / width);
-        
+        while (bitBuffer.size() >= 3) {
+            Boolean bit1 = bitBuffer.removeFirst();
+            Boolean bit2 = bitBuffer.removeFirst();
+            Boolean bit3 = bitBuffer.removeFirst();
 
-        while (!list.isEmpty()) {
-            //image.getRGB()
+            x = pixelIndex % width;
+            y = pixelIndex / width;
+
+            argb = image.getRGB(x, y);
+            alpha = ARGB.getAlpha(argb);
+            //red = ; 
+            // TODO: 21.10.2020  
         }
     }
 }

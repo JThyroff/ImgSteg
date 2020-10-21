@@ -5,8 +5,8 @@ import java.io.File;
 import static de.thyroff.imgsteg.legacy.HiderLegacy.hide;
 import static de.thyroff.imgsteg.legacy.RevealerLegacy.reveal;
 
-public class CUI extends UI {
-    public CUI(String[] args) {
+public class CLI extends UI {
+    public CLI(String[] args) {
         if (args.length == 3) { // execute in cmd mode
             String mode = args[0];
             String file = args[1];
