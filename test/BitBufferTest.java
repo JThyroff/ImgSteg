@@ -54,4 +54,13 @@ public class BitBufferTest {
         assertEquals(expected, bitBuffer.getBuffer());
     }
 
+    @Test
+    public void removeInt() {
+        BitBuffer bitBuffer = new BitBuffer();
+        int expected = 48_89_89_05_0;
+        bitBuffer.add(expected);
+        bitBuffer.add(343434);
+
+        assertEquals(expected, bitBuffer.removeInt());
+    }
 }

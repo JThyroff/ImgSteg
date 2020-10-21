@@ -6,9 +6,13 @@ public class BitBuffer {
 
     private ArrayList<Boolean> buffer = new ArrayList<>();
 
+    public void add(boolean b) {
+        buffer.add(b);
+    }
+
     private void add(int toAdd, int bits) {
         for (int d = 0; d < bits; d++) {
-            buffer.add((toAdd % 2) != 0);
+            buffer.add((toAdd % 2) == 1);
             toAdd >>= 1;
         }
     }
@@ -56,6 +60,19 @@ public class BitBuffer {
         return buffer.remove(0);
     }
 
+    public int removeInt() {
+        if (this.size() < 32) {
+            throw new RuntimeException("Buffer is not large enough to remove int");
+        }
+        int toReturn = 0;
+        for (int i = 0; i < 32; i++) {
+            if (this.removeFirst()) {
+                toReturn += 1 << i;
+            }
+        }
+        return toReturn;
+    }
+
     public ArrayList<Boolean> getBuffer() {
         return buffer;
     }
@@ -68,6 +85,5 @@ public class BitBuffer {
         }
         return b;
     }
-
 
 }
