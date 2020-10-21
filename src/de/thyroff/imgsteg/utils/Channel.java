@@ -1,5 +1,7 @@
 package de.thyroff.imgsteg.utils;
 
+import java.security.InvalidParameterException;
+
 public enum Channel {
     ALPHA,
     RED,
@@ -14,6 +16,21 @@ public enum Channel {
             case 3 -> BLUE;
             default -> null;
         };
+    }
+
+    public static Channel toChannel(boolean[] b) {
+        if (b.length != 2) {
+            throw new InvalidParameterException("Array has to have length 2");
+        }
+        if (!b[0] && !b[1]) {
+            return ALPHA;
+        } else if (!b[0] && b[1]) {
+            return RED;
+        } else if (!b[1]) {
+            return GREEN;
+        } else {
+            return BLUE;
+        }
     }
 
     public int toInt() {

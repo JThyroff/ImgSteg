@@ -31,23 +31,6 @@ public class BitBuffer {
         }
     }
 
-    /**
-     * 16 x
-     * 16 y
-     * 2 channel
-     * 16 offset
-     *
-     * @param list the position list
-     */
-    public void add(ArrayList<MyPosition> list) {
-        for (MyPosition pos : list) {
-            this.add(pos.getX());
-            this.add(pos.getY());
-            this.add(pos.getChannel().toBoolean());
-            this.add(pos.getOffset());
-        }
-    }
-
     public boolean isEmpty() {
         return buffer.isEmpty();
     }
@@ -60,6 +43,9 @@ public class BitBuffer {
         return buffer.remove(0);
     }
 
+    /**
+     * @return the first 32 bit in the buffer as integer
+     */
     public int removeInt() {
         if (this.size() < 32) {
             throw new RuntimeException("Buffer is not large enough to remove int");
@@ -71,6 +57,39 @@ public class BitBuffer {
             }
         }
         return toReturn;
+    }
+
+    /**
+     * @return the first 16 bit in the buffer as short
+     */
+    public short removeShort() {
+        if (this.size() < 16) {
+            throw new RuntimeException("Buffer is not large enough to remove short");
+        }
+        short toReturn = 0;
+        for (int i = 0; i < 16; i++) {
+            if (this.removeFirst()) {
+                toReturn += 1 << i;
+            }
+        }
+        return toReturn;
+    }
+
+    /**
+     * removes a boolean array from the buffer
+     *
+     * @param length the length of the array which shall be returned
+     * @return the array
+     */
+    public boolean[] removeBooleanArray(int length) {
+        if (this.size() < length) {
+            throw new RuntimeException("Buffer is not large enough to remove " + length + " booleans");
+        }
+        boolean[] b = new boolean[length];
+        for (int i = 0; i < length; i++) {
+            b[i] = this.removeFirst();
+        }
+        return b;
     }
 
     public ArrayList<Boolean> getBuffer() {

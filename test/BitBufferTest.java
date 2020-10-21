@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BitBufferTest {
     @Test
-    public void test1() {
+    public void toBooleanArray() {
         boolean[] booleans = BitBuffer.toBooleanArray(55);
         boolean[] expected = new boolean[32];
         for (int i = 0; i < 6; i++) {
@@ -19,7 +19,7 @@ public class BitBufferTest {
     }
 
     @Test
-    public void test2() {
+    public void addInt() {
         BitBuffer bitBuffer = new BitBuffer();
         bitBuffer.add(5);
 
@@ -37,7 +37,7 @@ public class BitBufferTest {
     }
 
     @Test
-    public void test3() {
+    public void addShort() {
         BitBuffer bitBuffer = new BitBuffer();
         bitBuffer.add((short) 5);
 
@@ -62,5 +62,25 @@ public class BitBufferTest {
         bitBuffer.add(343434);
 
         assertEquals(expected, bitBuffer.removeInt());
+    }
+
+    @Test
+    public void removeShort() {
+        BitBuffer bitBuffer = new BitBuffer();
+        short expected = (short) 0x75_60;
+        bitBuffer.add(expected);
+        bitBuffer.add(675);
+
+        assertEquals(expected, bitBuffer.removeShort());
+    }
+
+    @Test
+    public void removeBooleanArray() {
+        BitBuffer bitBuffer = new BitBuffer();
+        boolean[] expected = new boolean[]{true, true, false, true, false, true};
+        bitBuffer.add(expected);
+        bitBuffer.add(343);
+
+        assertArrayEquals(expected, bitBuffer.removeBooleanArray(6));
     }
 }

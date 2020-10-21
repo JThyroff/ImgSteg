@@ -2,6 +2,7 @@ package de.thyroff.imgsteg;
 
 import de.thyroff.imgsteg.utils.ARGB;
 import de.thyroff.imgsteg.utils.BitBuffer;
+import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
 
 import javax.imageio.ImageIO;
@@ -30,52 +31,68 @@ public class Revealer {
 
         BitBuffer bitBuffer = new BitBuffer();
 
-        int argb = -1;
-        int x = -1;
-        int y = -1;
-
         ////////////////////////////////////////////////////////////////////////////
         //////     read key to buffer     //////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        int red = -1;
-        int green = -1;
-        int blue = -1;
         //read size 33 bit
         for (int i = 0; i < 11; i++) {
-            x = pixelIndex % width;
-            y = pixelIndex / width;
-
-            argb = image.getRGB(x, y);
-            red = ARGB.getRed(argb);
-            green = ARGB.getGreen(argb);
-            blue = ARGB.getBlue(argb);
-
-            bitBuffer.add((red % 2) == 1);
-            bitBuffer.add((green % 2) == 1);
-            bitBuffer.add((blue % 2) == 1);
-        }
-
-        
-        while (!bitBuffer.isEmpty()) {
-            boolean bit1 = bitBuffer.removeFirst();
-            boolean bit2 = bitBuffer.removeFirst();
-            boolean bit3 = bitBuffer.removeFirst();
-
-            x = pixelIndex % width;
-            y = pixelIndex / width;
-
-            argb = image.getRGB(x, y);
-            argb = ARGB.inject(argb, bit1, bit2, bit3);
-            image.setRGB(x, y, argb);
+            addToBuffer(image, width, pixelIndex, bitBuffer);
 
             pixelIndex++;
             if (pixelIndex >= prod) {
                 pixelIndex = 0;
             }
+        }
+        final int listSize = bitBuffer.removeInt(); //positions to be read
 
+        assert bitBuffer.size() == 1; //first bit of first position already in the buffer
+
+        ////////////////////////////////////////////////////////////////////////////
+        //////     read positions    ///////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        while (bitBuffer.size() != listSize * 50) { // 50 bit per position
+            addToBuffer(image, width, pixelIndex, bitBuffer);
+
+            pixelIndex++;
+            if (pixelIndex >= prod) {
+                pixelIndex = 0;
+            }
         }
 
-        return null;
+        ////////////////////////////////////////////////////////////////////////////
+        //////     read buffer to list     /////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        ArrayList<MyPosition> posList = new ArrayList<>();
+
+        while (posList.size() < listSize) {
+            //read 50 bit of the buffer and turn them into a position object
+            short x = bitBuffer.removeShort();
+            short y = bitBuffer.removeShort();
+            boolean[] channel = bitBuffer.removeBooleanArray(2);
+            short offset = bitBuffer.removeShort();
+
+            posList.add(new MyPosition(x, y, Channel.toChannel(channel), offset));
+        }
+        assert bitBuffer.isEmpty();
+        return posList;
+    }
+
+    /**
+     * adds bits from one pixel to the buffer
+     *
+     * @param image      the image
+     * @param width      the width
+     * @param pixelIndex the pixel index
+     * @param bitBuffer  the buffer
+     */
+    private static void addToBuffer(BufferedImage image, int width, int pixelIndex, BitBuffer bitBuffer) {
+        int argb = image.getRGB(pixelIndex % width, pixelIndex / width);
+
+        bitBuffer.add((ARGB.getRed(argb) % 2) == 1);
+        bitBuffer.add((ARGB.getGreen(argb) % 2) == 1);
+        bitBuffer.add((ARGB.getBlue(argb) % 2) == 1);
     }
 }

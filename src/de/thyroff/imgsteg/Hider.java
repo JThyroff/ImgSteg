@@ -120,7 +120,7 @@ public class Hider {
 
         BitBuffer bitBuffer = new BitBuffer();
         bitBuffer.add(size);
-        bitBuffer.add(list);
+        addToBuffer(list, bitBuffer);
 
         //do some bit stuffing
         if (bitBuffer.size() % 3 != 0) {
@@ -161,6 +161,24 @@ public class Hider {
                 pixelIndex = 0;
             }
 
+        }
+    }
+
+    /**
+     * 50 bit per position
+     * 16 x
+     * 16 y
+     * 2 channel
+     * 16 offset
+     *
+     * @param list the position list
+     */
+    private static void addToBuffer(ArrayList<MyPosition> list, BitBuffer buffer) {
+        for (MyPosition pos : list) {
+            buffer.add(pos.getX());
+            buffer.add(pos.getY());
+            buffer.add(pos.getChannel().toBoolean());
+            buffer.add(pos.getOffset());
         }
     }
 }
