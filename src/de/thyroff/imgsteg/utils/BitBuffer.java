@@ -21,7 +21,7 @@ public class BitBuffer {
         add(toAdd, 16);
     }
 
-    private void add(boolean[] booleanArray) {
+    public void add(boolean[] booleanArray) {
         for (boolean b : booleanArray) {
             buffer.add(b);
         }
@@ -52,7 +52,7 @@ public class BitBuffer {
         return buffer.size();
     }
 
-    public Boolean removeFirst() {
+    public boolean removeFirst() {
         return buffer.remove(0);
     }
 

@@ -1,5 +1,6 @@
 package de.thyroff.imgsteg;
 
+import de.thyroff.imgsteg.utils.ARGB;
 import de.thyroff.imgsteg.utils.BitBuffer;
 import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
@@ -100,6 +101,7 @@ public class Hider {
      * @param list    the list of the Positions
      */
     private static void writeKeyIntoImage(File keyFile, ArrayList<MyPosition> list) throws IOException {
+
         BufferedImage image = ImageIO.read(keyFile);
 
         final int width = image.getWidth();
@@ -108,6 +110,10 @@ public class Hider {
 
         final int size = list.size();
 
+        //check boundaries
+        if ((size * 50 + 32) > prod * 3) {
+            throw new IllegalArgumentException("You can not save such a long position list in this small keyImage");
+        }
         ////////////////////////////////////////////////////////////////////////////
         ///////   fill buffer    ///////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -115,6 +121,11 @@ public class Hider {
         BitBuffer bitBuffer = new BitBuffer();
         bitBuffer.add(size);
         bitBuffer.add(list);
+
+        //do some bit stuffing
+        if (bitBuffer.size() % 3 != 0) {
+            bitBuffer.add(new boolean[3 - bitBuffer.size() % 3]);
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ///////    buffer filled     ///////////////////////////////////////////////
@@ -126,21 +137,30 @@ public class Hider {
         int argb = -1;
         int x = -1;
         int y = -1;
-        int alpha = -1;
-        int red = -1;
-        int green = -1;
-        int blue = -1;
 
-        while (bitBuffer.size() >= 3) {
-            Boolean bit1 = bitBuffer.removeFirst();
-            Boolean bit2 = bitBuffer.removeFirst();
-            Boolean bit3 = bitBuffer.removeFirst();
+        assert bitBuffer.size() % 3 == 0;
+
+        ////////////////////////////////////////////////////////////////////////////
+        //////     do injection     ////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        while (!bitBuffer.isEmpty()) {
+            boolean bit1 = bitBuffer.removeFirst();
+            boolean bit2 = bitBuffer.removeFirst();
+            boolean bit3 = bitBuffer.removeFirst();
 
             x = pixelIndex % width;
             y = pixelIndex / width;
 
             argb = image.getRGB(x, y);
-            
+            argb = ARGB.inject(argb, bit1, bit2, bit3);
+            image.setRGB(x, y, argb);
+
+            pixelIndex++;
+            if (pixelIndex >= prod) {
+                pixelIndex = 0;
+            }
+
         }
     }
 }
