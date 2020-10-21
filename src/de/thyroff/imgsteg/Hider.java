@@ -1,6 +1,5 @@
 package de.thyroff.imgsteg;
 
-import de.thyroff.imgsteg.utils.ARGB;
 import de.thyroff.imgsteg.utils.BitBuffer;
 import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
@@ -141,9 +140,7 @@ public class Hider {
             y = pixelIndex / width;
 
             argb = image.getRGB(x, y);
-            alpha = ARGB.getAlpha(argb);
-            //red = ; 
-            // TODO: 21.10.2020  
+            
         }
     }
 }

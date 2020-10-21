@@ -41,10 +41,23 @@ public class ARGB {
         if (bits.length != 3) {
             throw new IllegalArgumentException("Length has to be 3");
         }
+        return inject(argb, bits[0], bits[1], bits[2]);
+    }
+
+    /**
+     * injects three bits into the rgb channels
+     *
+     * @param argb the pixel
+     * @param bit1 bit1
+     * @param bit2 bit2
+     * @param bit3 bit 3
+     * @return the new pixel
+     */
+    public static int inject(int argb, boolean bit1, boolean bit2, boolean bit3) {
         int mask = 0;
         // 0000_0000  0000_0000  0000_0000  0000_0000
         mask = 1 << 16; // red
-        if (bits[0]) {
+        if (bit1) {
             argb = argb | mask;
         } else {
             mask = ~mask;
@@ -52,7 +65,7 @@ public class ARGB {
         }
 
         mask = 1 << 8; // green
-        if (bits[1]) {
+        if (bit2) {
             argb = argb | mask;
         } else {
             mask = ~mask;
@@ -60,7 +73,7 @@ public class ARGB {
         }
 
         mask = 1; // blue
-        if (bits[2]) {
+        if (bit3) {
             argb = argb | mask;
         } else {
             mask = ~mask;
