@@ -1,4 +1,4 @@
-package de.thyroff.imgsteg.ui;
+package de.thyroff.imgsteg.legacy.ui;
 
 import javax.swing.*;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.File;
 import static de.thyroff.imgsteg.legacy.HiderLegacy.hide;
 import static de.thyroff.imgsteg.legacy.RevealerLegacy.reveal;
 
-public class GUI {
+public class GUILegacy {
     JFileChooser chooser = new JFileChooser();
 
     private void guiHide() {
@@ -30,7 +30,7 @@ public class GUI {
         JOptionPane.showMessageDialog(null, "The revealed text is: " + reveal(selectedFile, key));
     }
 
-    public GUI() {
+    public GUILegacy() {
         ////////////////////////////////////////////////////////////////////////////
         ///// hide or reveal ? /////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

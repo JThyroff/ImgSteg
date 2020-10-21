@@ -1,7 +1,7 @@
 package de.thyroff.imgsteg;
 
-import de.thyroff.imgsteg.ui.CLI;
-import de.thyroff.imgsteg.ui.GUI;
+import de.thyroff.imgsteg.legacy.ui.CLILegacy;
+import de.thyroff.imgsteg.legacy.ui.GUILegacy;
 
 import javax.swing.*;
 
@@ -9,20 +9,14 @@ public class Main {
 
     public static void main(String[] args) {
         if (args.length > 0) {
-            new CLI(args);
+            new CLILegacy(args);
         } else { // show dialogs for user input
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (UnsupportedLookAndFeelException e) {
+            } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException e) {
                 e.printStackTrace();
             }
-            new GUI();
+            new GUILegacy();
         }
     }
 }

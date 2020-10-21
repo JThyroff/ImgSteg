@@ -20,6 +20,7 @@ public class Hider {
      * @return the best location where the char can be hidden
      */
     private static MyPosition searchBestPos(BufferedImage image, char c) {
+        // TODO: 22.10.2020 auf beliebiges byte anpassen?
         MyPosition bestPoint = null;
         for (short x = 0; x < image.getWidth(); x++) {
             for (short y = 0; y < image.getHeight(); y++) {
@@ -81,6 +82,7 @@ public class Hider {
     }
 
     public static void hide(File file, File keyFile, File msg) {
+        // TODO: 22.10.2020 implement
         try {
             BufferedImage image = ImageIO.read(file);
             ArrayList<MyPosition> list = new ArrayList<>();

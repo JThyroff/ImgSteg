@@ -1,12 +1,12 @@
-package de.thyroff.imgsteg.ui;
+package de.thyroff.imgsteg.legacy.ui;
 
 import java.io.File;
 
 import static de.thyroff.imgsteg.legacy.HiderLegacy.hide;
 import static de.thyroff.imgsteg.legacy.RevealerLegacy.reveal;
 
-public class CLI extends UI {
-    public CLI(String[] args) {
+public class CLILegacy {
+    public CLILegacy(String[] args) {
         if (args.length == 3) { // execute in cmd mode
             String mode = args[0];
             String file = args[1];
@@ -24,7 +24,7 @@ public class CLI extends UI {
         }
     }
 
-    @Override
+
     public void showHelp() {
         System.out.println("-------------------");
         System.out.println("This program hides a given ASCII String in a given Image and returns another Image as key for revealing.");
