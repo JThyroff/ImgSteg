@@ -3,10 +3,16 @@ package de.thyroff.imgsteg.utils;
 import java.security.InvalidParameterException;
 
 public enum Channel {
-    ALPHA,
-    RED,
-    GREEN,
-    BLUE;
+    ALPHA(0),
+    RED(1),
+    GREEN(2),
+    BLUE(3);
+
+    private int channelInt;
+
+    Channel(int channelInt) {
+        this.channelInt = channelInt;
+    }
 
     public static Channel toChannel(int c) {
         return switch (c) {
@@ -24,7 +30,7 @@ public enum Channel {
         }
         if (!b[0] && !b[1]) {
             return ALPHA;
-        } else if (!b[0] && b[1]) {
+        } else if (!b[0]) {
             return RED;
         } else if (!b[1]) {
             return GREEN;
@@ -34,21 +40,7 @@ public enum Channel {
     }
 
     public int toInt() {
-        switch (this) {
-            case ALPHA -> {
-                return 0;
-            }
-            case RED -> {
-                return 1;
-            }
-            case GREEN -> {
-                return 2;
-            }
-            case BLUE -> {
-                return 3;
-            }
-        }
-        return -1;
+        return channelInt;
     }
 
     public boolean[] toBoolean() {

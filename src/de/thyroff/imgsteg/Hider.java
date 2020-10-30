@@ -102,7 +102,7 @@ public class Hider {
      * @param keyFile Path to the Image where the Positions shall be hidden
      * @param list    the list of the Positions
      */
-    private static void writeKeyIntoImage(File keyFile, ArrayList<MyPosition> list) throws IOException {
+    public static void writeKeyIntoImage(File keyFile, ArrayList<MyPosition> list) throws IOException {
 
         BufferedImage image = ImageIO.read(keyFile);
 
@@ -164,6 +164,7 @@ public class Hider {
             }
 
         }
+        ImageIO.write(image, "png", keyFile);
     }
 
     /**
