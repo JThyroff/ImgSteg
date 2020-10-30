@@ -27,4 +27,16 @@ public class ARGBTest {
 
         assertEquals(expected, injected);
     }
+
+    @Test
+    public void test3() {
+
+        int testPix = 0xff_ff_ff_ff;
+        boolean[] bits = new boolean[]{false, false, false};
+
+        int injected = ARGB.inject(testPix, bits);
+        int expected = 0xff_fe_fe_fe;
+
+        assertEquals(expected, injected);
+    }
 }
