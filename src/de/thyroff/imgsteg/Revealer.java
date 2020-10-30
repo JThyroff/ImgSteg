@@ -52,7 +52,7 @@ public class Revealer {
         //////     read positions    ///////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        while (bitBuffer.size() != listSize * 50) { // 50 bit per position
+        while (bitBuffer.size() < listSize * 50) { // 50 bit per position. The smaller than sign is crucial because of bit stuffing
             addToBuffer(image, width, pixelIndex, bitBuffer);
 
             pixelIndex++;
@@ -76,7 +76,7 @@ public class Revealer {
 
             posList.add(new MyPosition(x, y, Channel.toChannel(channel), offset));
         }
-        assert bitBuffer.isEmpty();
+        assert bitBuffer.size() < 3;
         return posList;
     }
 
