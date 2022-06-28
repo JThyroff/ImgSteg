@@ -7,6 +7,8 @@ public class MyPosition {
     private Channel channel;
     private short offset;
 
+    public final static short BIT_COUNT = 50;
+
     public MyPosition(short x, short y, Channel channel, short offset) {
         this.x = x;
         this.y = y;

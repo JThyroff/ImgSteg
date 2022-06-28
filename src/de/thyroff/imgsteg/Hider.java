@@ -110,10 +110,10 @@ public class Hider {
         final int height = image.getHeight();
         final int prod = width * height;
 
-        final int size = list.size();
+        final int size = list.size();  // 32 bit integer
 
-        //check boundaries
-        if ((size * 50 + 32) > prod * 3) {
+        //check boundaries whether the given key can be stored in the image
+        if ((size * MyPosition.BIT_COUNT + 32) > prod * 3) { //size times bit count of MyPosition
             throw new IllegalArgumentException("You can not save such a long position list in this small keyImage");
         }
         ////////////////////////////////////////////////////////////////////////////

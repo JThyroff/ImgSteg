@@ -12,6 +12,18 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class KeyTest {
 
+    private static final String TEST_IMG_DIR = "test/images";
+    private static final String ORIGINAL_DIR = "original";
+    private static final String COPY_DIR = "copy";
+
+    public static String getTestImgOriginalDir(){
+        return TEST_IMG_DIR + "/" + ORIGINAL_DIR;
+    }
+
+    public static String getTestImgCopyDir(){
+        return TEST_IMG_DIR + "/" + COPY_DIR;
+    }
+
     public void keyTestImg(String path) {
         ArrayList<MyPosition> expected = new ArrayList<>();
         expected.add(new MyPosition((short) 1, (short) 2, Channel.RED, (short) 4));
@@ -19,8 +31,7 @@ public class KeyTest {
 
         File original = new File(path);
 
-        copyFile(original);
-        File testFile = new File("copy_" + path);
+        File testFile = copyFile(original);
 
         try {
             Hider.writeKeyIntoImage(testFile, expected);
@@ -39,21 +50,21 @@ public class KeyTest {
 
     @Test
     public void keyTest1() {
-        keyTestImg("test/testImg1.jpg");
+        keyTestImg(getTestImgOriginalDir() + "/testImg1.jpg");
     }
 
     @Test
     public void keyTestBlack() {
-        keyTestImg("test/blankKey84.png");
+        keyTestImg(getTestImgOriginalDir() + "/blankKey84.png");
     }
 
     @Test
     public void keyTestWhite() {
-        keyTestImg("test/blankKey84White.png");
+        keyTestImg(getTestImgOriginalDir() + "/blankKey84White.png");
     }
 
-    public static void copyFile(File original) {
-        File copied = new File(original.getParentFile().getPath() + "/" + "copy_" + original.getName());
+    public static File copyFile(File original) {
+        File copied = new File(getTestImgCopyDir() + "/copy_"+  original.getName());
         try (
                 InputStream in = new BufferedInputStream(
                         new FileInputStream(original));
@@ -69,6 +80,7 @@ public class KeyTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return copied;
     }
 
 }
