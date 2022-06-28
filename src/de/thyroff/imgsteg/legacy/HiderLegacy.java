@@ -18,6 +18,8 @@ public class HiderLegacy {
      */
     private static MyPosition searchBestPos(BufferedImage image, char c) {
         MyPosition bestPoint = null;
+        //iterates over all the pixels in the given image. If a suitable location is found the method returns.
+        //if there is not a suitable position, the best suitable one is stored with an offset.
         for (short x = 0; x < image.getWidth(); x++) {
             for (short y = 0; y < image.getHeight(); y++) {
                 int rgb = image.getRGB(x, y);
@@ -77,6 +79,11 @@ public class HiderLegacy {
         return bestPoint;
     }
 
+    /**
+     * hides the message in the given file. Generates a key image that is needed to reveal the message again.
+     * @param file the file where the message should be hidden in
+     * @param msg the message that is hidden in the file
+     */
     public static void hide(File file, String msg) {
         try {
             BufferedImage image = ImageIO.read(file);
@@ -91,6 +98,7 @@ public class HiderLegacy {
     }
 
     /**
+     * Generates a Key-Image of the Position list and stores it at the given path.
      * @param path Path to the location where the key will be stored
      * @param list the list of positions which will be stored in the key
      */

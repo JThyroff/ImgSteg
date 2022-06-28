@@ -17,8 +17,7 @@ public class MyPosition {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MyPosition)) return false;
-        MyPosition that = (MyPosition) o;
+        if (!(o instanceof MyPosition that)) return false;
         return x == that.x &&
                 y == that.y &&
                 offset == that.offset &&

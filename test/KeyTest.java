@@ -11,30 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class KeyTest {
-    public static void main(String[] args) {
+
+    public void keyTestImg(String path) {
         ArrayList<MyPosition> expected = new ArrayList<>();
         expected.add(new MyPosition((short) 1, (short) 2, Channel.RED, (short) 4));
-
-        File original = new File("test/dualneg1.png");
-
-        copyFile(original);
-        File testFile = new File("test/dualneg1.png" + "copy.png");
-
-        try {
-            Hider.writeKeyIntoImage(testFile, expected);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void keyTestImg(String path) {
-        ArrayList<MyPosition> expected = new ArrayList<>();
-        expected.add(new MyPosition((short) 1, (short) 2, Channel.RED, (short) 4));
+        expected.add(new MyPosition((short) 43, (short) 3, Channel.BLUE, (short) -2));
 
         File original = new File(path);
 
         copyFile(original);
-        File testFile = new File(path + "copy.png");
+        File testFile = new File("copy_" + path);
 
         try {
             Hider.writeKeyIntoImage(testFile, expected);
@@ -53,7 +39,7 @@ public class KeyTest {
 
     @Test
     public void keyTest1() {
-        keyTestImg("test/dualneg1.png");
+        keyTestImg("test/testImg1.jpg");
     }
 
     @Test
@@ -67,7 +53,7 @@ public class KeyTest {
     }
 
     public static void copyFile(File original) {
-        File copied = new File(original.getParentFile().getPath() + "/" + original.getName() + "copy" + ".png");
+        File copied = new File(original.getParentFile().getPath() + "/" + "copy_" + original.getName());
         try (
                 InputStream in = new BufferedInputStream(
                         new FileInputStream(original));
