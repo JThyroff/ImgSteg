@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BitBuffer {
 
-    private ArrayList<Boolean> buffer = new ArrayList<>();
+    private final ArrayList<Boolean> buffer = new ArrayList<>();
 
     public void add(boolean b) {
         buffer.add(b);
@@ -12,7 +12,10 @@ public class BitBuffer {
 
     private void add(int toAdd, int bits) {
         for (int d = 0; d < bits; d++) {
-            buffer.add((toAdd % 2) == 1);
+            // works for positive and negative values
+            // put true for a 1 and false for 0
+            buffer.add((toAdd % 2) != 0);
+            //shift to the right
             toAdd >>= 1;
         }
     }

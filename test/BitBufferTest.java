@@ -55,6 +55,24 @@ public class BitBufferTest {
     }
 
     @Test
+    public void addNegativeShort() {
+        BitBuffer bitBuffer = new BitBuffer();
+        bitBuffer.add((short) -4);
+
+        ArrayList<Boolean> expected = new ArrayList<>();
+
+        for (int i = 0; i < 16; i++) {
+            if (i == 0 || i == 1) {
+                expected.add(false);
+            } else {
+                expected.add(true);
+            }
+        }
+
+        assertEquals(expected, bitBuffer.getBuffer());
+    }
+
+    @Test
     public void removeInt() {
         BitBuffer bitBuffer = new BitBuffer();
         int expected = 48_89_89_05_0;
