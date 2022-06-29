@@ -8,7 +8,7 @@ public enum Channel {
     GREEN(2),
     BLUE(3);
 
-    private int channelInt;
+    private final int channelInt;
 
     Channel(int channelInt) {
         this.channelInt = channelInt;

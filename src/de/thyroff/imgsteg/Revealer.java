@@ -17,7 +17,6 @@ public class Revealer {
      *
      * @param keyFile the key file
      * @return the position list
-     * @throws IOException
      */
     public static ArrayList<MyPosition> extractKeyFromImage(File keyFile) throws IOException {
         BufferedImage image = ImageIO.read(keyFile);

@@ -8,18 +8,19 @@ import de.thyroff.imgsteg.utils.MyPosition;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Hider {
 
     /**
      * @param image the image
-     * @param c     the char to hide
+     * @param b     the char to hide
      * @return the best location where the char can be hidden
      */
-    private static MyPosition searchBestPos(BufferedImage image, char c) {
+    private static MyPosition searchBestPos(BufferedImage image, byte b) {
         // TODO: 22.10.2020 auf beliebiges byte anpassen?
         MyPosition bestPoint = null;
         for (short x = 0; x < image.getWidth(); x++) {
@@ -35,13 +36,13 @@ public class Hider {
                 ////////////////////////////////////////////////////////////////////////////////
 
                 MyPosition m = null;
-                if (alpha == c) {
+                if (alpha == b) {
                     m = new MyPosition(x, y, Channel.ALPHA, (short) 0);
-                } else if (red == c) {
+                } else if (red == b) {
                     m = new MyPosition(x, y, Channel.RED, (short) 0);
-                } else if (green == c) {
+                } else if (green == b) {
                     m = new MyPosition(x, y, Channel.GREEN, (short) 0);
-                } else if (blue == c) {
+                } else if (blue == b) {
                     m = new MyPosition(x, y, Channel.BLUE, (short) 0);
                 }
 
@@ -53,22 +54,22 @@ public class Hider {
                 ////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////// location is not suitable ////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////
-                int alphaDiff = Math.abs(c - alpha);
-                int redDiff = Math.abs(c - red);
-                int greenDiff = Math.abs(c - green);
-                int blueDiff = Math.abs(c - blue);
+                int alphaDiff = Math.abs(b - alpha);
+                int redDiff = Math.abs(b - red);
+                int greenDiff = Math.abs(b - green);
+                int blueDiff = Math.abs(b - blue);
 
                 Channel channel = Channel.BLUE;
-                short localOffset = (short) (c - blue);
+                short localOffset = (short) (b - blue);
                 if (alphaDiff <= redDiff && alphaDiff <= greenDiff && alphaDiff <= blueDiff) {
                     channel = Channel.ALPHA;
-                    localOffset = (short) (c - alpha);
+                    localOffset = (short) (b - alpha);
                 } else if (redDiff <= alphaDiff && redDiff <= greenDiff && redDiff <= blueDiff) {
                     channel = Channel.RED;
-                    localOffset = (short) (c - red);
+                    localOffset = (short) (b - red);
                 } else if (greenDiff <= alphaDiff && greenDiff <= redDiff && greenDiff <= blueDiff) {
                     channel = Channel.GREEN;
-                    localOffset = (short) (c - green);
+                    localOffset = (short) (b - green);
                 }
 
                 //this location is not suitable -> compare with best point
@@ -81,17 +82,17 @@ public class Hider {
         return bestPoint;
     }
 
-    public static void hide(File file, File keyFile, File msg) {
-        // TODO: 22.10.2020 implement
+    public static void hide(File file, File keyFile, Path msgPath) {
         try {
             BufferedImage image = ImageIO.read(file);
             ArrayList<MyPosition> list = new ArrayList<>();
-            FileInputStream msgIs = new FileInputStream(msg);
 
-            byte bytes[] = new byte[(int) msg.length()];
-            /*for (char c : msg.toCharArray()) {
-                list.add(searchBestPos(image, c));
-            }*/
+            //iterate over the msgBytes in the File
+            byte[] msgBytes = Files.readAllBytes(msgPath);
+            System.out.println("");
+            for (byte b : msgBytes) {
+                list.add(searchBestPos(image, b));
+            }
             writeKeyIntoImage(keyFile, list);
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,8 +114,19 @@ public class Hider {
         final int size = list.size();  // 32 bit integer
 
         //check boundaries whether the given key can be stored in the image
-        if ((size * MyPosition.BIT_COUNT + 32) > prod * 3) { //size times bit count of MyPosition
-            throw new IllegalArgumentException("You can not save such a long position list in this small keyImage");
+        int msgBitLength = size * MyPosition.BIT_COUNT + 32;
+        if (msgBitLength > prod * 3) { //size times bit count of MyPosition
+            throw new IllegalArgumentException(
+                    "You can not save such a long position list in this small keyImage. "
+                            + "\nMessage Bit Length: " + msgBitLength
+                            + "\nAllowed Length: " + prod * 3
+            );
+        } else {
+            System.out.println(
+                    "Msg length okay."
+                            + "\nMessage Bit Length: " + msgBitLength
+                            + "\nAllowed Length: " + prod * 3
+            );
         }
         ////////////////////////////////////////////////////////////////////////////
         ///////   fill buffer    ///////////////////////////////////////////////////
