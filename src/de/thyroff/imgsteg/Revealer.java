@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Revealer {
     /**
@@ -93,5 +94,59 @@ public class Revealer {
         bitBuffer.add((ARGB.getRed(argb) % 2) == 1);
         bitBuffer.add((ARGB.getGreen(argb) % 2) == 1);
         bitBuffer.add((ARGB.getBlue(argb) % 2) == 1);
+    }
+
+    private static byte getByte(BufferedImage image, MyPosition pos){
+        int rgb = image.getRGB(pos.getX(), pos.getY());
+        int alpha = (rgb >> 24) & 0xff;
+        int red = (rgb >> 16) & 0xff;
+        int green = (rgb >> 8) & 0xff;
+        int blue = rgb & 0xff;
+
+        switch (pos.getChannel()) {
+
+            case ALPHA -> {
+                return (byte) (alpha + pos.getOffset());
+            }
+            case RED -> {
+                return (byte) (red + pos.getOffset());
+            }
+            case GREEN -> {
+                return (byte) (green + pos.getOffset());
+            }
+            case BLUE -> {
+                return (byte) (blue + pos.getOffset());
+            }
+            default -> {
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * reads the data from the given image at the given locations
+     * @param file to read the data from
+     * @param myPositions the position list
+     * @return byte array of the data
+     */
+    public static byte[] reveal(File file, List<MyPosition> myPositions){
+        try {
+            BufferedImage image = ImageIO.read(file);
+            byte[] bytes = new byte[myPositions.size()];
+
+            //myPositions.stream().map((position) -> getByte(image, new MyPosition(position.getX(), position.getY(),position.getChannel(),position.getOffset()))).toArray();
+
+            for (int x = 0; x < myPositions.size(); x++) {
+                MyPosition myPosition = myPositions.get(x);
+                short x_coord = myPosition.getX();
+                short y_coord = myPosition.getY();
+                short offset = myPosition.getOffset();
+                bytes[x] = getByte(image, new MyPosition(x_coord, y_coord, myPosition.getChannel(), offset));
+            }
+            return bytes;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 }

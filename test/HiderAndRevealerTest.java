@@ -7,6 +7,7 @@ import org.junit.Test;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,12 +21,18 @@ public class HiderAndRevealerTest {
     private static final String ORIGINAL_DIR = "original";
     private static final String COPY_DIR = "copy";
 
+    private static final String OUT_DIR = "out";
+
     public static String getTestImgOriginalDir() {
         return TEST_IMG_DIR + "/" + ORIGINAL_DIR;
     }
 
     public static String getTestImgCopyDir() {
         return TEST_IMG_DIR + "/" + COPY_DIR;
+    }
+
+    public static String getOutDir(){
+        return TEST_IMG_DIR + "/" + OUT_DIR;
     }
 
     /**
@@ -121,12 +128,30 @@ public class HiderAndRevealerTest {
     public void test_hide(){
         String pathFile = getTestImgOriginalDir() + "/blankKey84.png";
         String pathKey = getTestImgOriginalDir() + "/blankKey84White.png";
-        String pathMsg = getTestImgOriginalDir() + "/testMsg.txt";
+        Path pathMsg = Path.of(getTestImgOriginalDir() + "/testMsg.txt");
 
         File copyFile = copyFile(new File(pathFile));
         File copyKey = copyFile(new File(pathKey));
 
-        Hider.hide(copyFile, copyKey, Path.of(pathMsg));
+
+        Hider.hide(copyFile, copyKey, pathMsg);
+        try {
+            ArrayList<MyPosition> keyFromImage = Revealer.extractKeyFromImage(copyKey);
+            byte[] revealedData = Revealer.reveal(copyFile, keyFromImage);
+
+            try(FileOutputStream fos = new FileOutputStream(getOutDir() + "/outMsg")){
+                fos.write(revealedData);
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
+
+            //check for same content
+            if (Files.mismatch(Path.of(getOutDir() + "/outMsg"), pathMsg) != -1){
+                fail();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static File copyFile(File original) {

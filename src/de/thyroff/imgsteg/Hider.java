@@ -21,7 +21,6 @@ public class Hider {
      * @return the best location where the char can be hidden
      */
     private static MyPosition searchBestPos(BufferedImage image, byte b) {
-        // TODO: 22.10.2020 auf beliebiges byte anpassen?
         MyPosition bestPoint = null;
         for (short x = 0; x < image.getWidth(); x++) {
             for (short y = 0; y < image.getHeight(); y++) {
