@@ -1,3 +1,6 @@
 [submodule "RandomIterator"]
 	path = RandomIterator
 	url = https://github.com/JThyroff/RandomIterator.git
+[submodule "javatuples"]
+	path = javatuples
+	url = https://github.com/javatuples/javatuples

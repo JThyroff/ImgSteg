@@ -4,6 +4,8 @@ import de.thyroff.imgsteg.utils.ARGB;
 import de.thyroff.imgsteg.utils.BitBuffer;
 import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
+import de.thyroff.randomiterator.FasterIterator;
+import org.javatuples.Pair;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,8 +14,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hider {
+
+
+    public static List<Pair<Short, Short>> generatePixelList(int width, int height) {
+        List<Pair<Short, Short>> l = new ArrayList<>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                l.add(new Pair<>((short) x, (short) y));
+            }
+        }
+        return l;
+    }
 
     /**
      * @param image the image
@@ -22,59 +36,62 @@ public class Hider {
      */
     private static MyPosition searchBestPos(BufferedImage image, byte b) {
         MyPosition bestPoint = null;
-        for (short x = 0; x < image.getWidth(); x++) {
-            for (short y = 0; y < image.getHeight(); y++) {
-                int rgb = image.getRGB(x, y);
-                int alpha = (rgb >> 24) & 0xff;
-                int red = (rgb >> 16) & 0xff;
-                int green = (rgb >> 8) & 0xff;
-                int blue = rgb & 0xff;
+        FasterIterator<Pair<Short, Short>> f = new FasterIterator<>(generatePixelList(image.getWidth(), image.getHeight()));
+        while (f.hasNext()) {
+            Pair<Short, Short> p = f.next();
+            short x = p.getValue0();
+            short y = p.getValue1();
 
-                ////////////////////////////////////////////////////////////////////////////////
-                ////////////////////////////// test whether location is suitable ///////////////
-                ////////////////////////////////////////////////////////////////////////////////
+            int rgb = image.getRGB(x, y);
+            int alpha = (rgb >> 24) & 0xff;
+            int red = (rgb >> 16) & 0xff;
+            int green = (rgb >> 8) & 0xff;
+            int blue = rgb & 0xff;
 
-                MyPosition m = null;
-                if (alpha == b) {
-                    m = new MyPosition(x, y, Channel.ALPHA, (short) 0);
-                } else if (red == b) {
-                    m = new MyPosition(x, y, Channel.RED, (short) 0);
-                } else if (green == b) {
-                    m = new MyPosition(x, y, Channel.GREEN, (short) 0);
-                } else if (blue == b) {
-                    m = new MyPosition(x, y, Channel.BLUE, (short) 0);
-                }
+            ////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////// test whether location is suitable ///////////////
+            ////////////////////////////////////////////////////////////////////////////////
 
-                if (m != null) {
-                    // suitable location found
-                    return m;
-                }
+            MyPosition m = null;
+            if (alpha == b) {
+                m = new MyPosition(x, y, Channel.ALPHA, (short) 0);
+            } else if (red == b) {
+                m = new MyPosition(x, y, Channel.RED, (short) 0);
+            } else if (green == b) {
+                m = new MyPosition(x, y, Channel.GREEN, (short) 0);
+            } else if (blue == b) {
+                m = new MyPosition(x, y, Channel.BLUE, (short) 0);
+            }
 
-                ////////////////////////////////////////////////////////////////////////////////
-                ////////////////////////////// location is not suitable ////////////////////////
-                ////////////////////////////////////////////////////////////////////////////////
-                int alphaDiff = Math.abs(b - alpha);
-                int redDiff = Math.abs(b - red);
-                int greenDiff = Math.abs(b - green);
-                int blueDiff = Math.abs(b - blue);
+            if (m != null) {
+                // suitable location found
+                return m;
+            }
 
-                Channel channel = Channel.BLUE;
-                short localOffset = (short) (b - blue);
-                if (alphaDiff <= redDiff && alphaDiff <= greenDiff && alphaDiff <= blueDiff) {
-                    channel = Channel.ALPHA;
-                    localOffset = (short) (b - alpha);
-                } else if (redDiff <= alphaDiff && redDiff <= greenDiff && redDiff <= blueDiff) {
-                    channel = Channel.RED;
-                    localOffset = (short) (b - red);
-                } else if (greenDiff <= alphaDiff && greenDiff <= redDiff && greenDiff <= blueDiff) {
-                    channel = Channel.GREEN;
-                    localOffset = (short) (b - green);
-                }
+            ////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////// location is not suitable ////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////
+            int alphaDiff = Math.abs(b - alpha);
+            int redDiff = Math.abs(b - red);
+            int greenDiff = Math.abs(b - green);
+            int blueDiff = Math.abs(b - blue);
 
-                //this location is not suitable -> compare with best point
-                if (bestPoint == null || Math.abs(localOffset) < Math.abs(bestPoint.getOffset())) { //overwrite best point
-                    bestPoint = new MyPosition(x, y, channel, localOffset);
-                }
+            Channel channel = Channel.BLUE;
+            short localOffset = (short) (b - blue);
+            if (alphaDiff <= redDiff && alphaDiff <= greenDiff && alphaDiff <= blueDiff) {
+                channel = Channel.ALPHA;
+                localOffset = (short) (b - alpha);
+            } else if (redDiff <= alphaDiff && redDiff <= greenDiff && redDiff <= blueDiff) {
+                channel = Channel.RED;
+                localOffset = (short) (b - red);
+            } else if (greenDiff <= alphaDiff && greenDiff <= redDiff && greenDiff <= blueDiff) {
+                channel = Channel.GREEN;
+                localOffset = (short) (b - green);
+            }
+
+            //this location is not suitable -> compare with best point
+            if (bestPoint == null || Math.abs(localOffset) < Math.abs(bestPoint.getOffset())) { //overwrite best point
+                bestPoint = new MyPosition(x, y, channel, localOffset);
             }
         }
 
@@ -88,7 +105,7 @@ public class Hider {
 
             //iterate over the msgBytes in the File
             byte[] msgBytes = Files.readAllBytes(msgPath);
-            System.out.println("");
+
             for (byte b : msgBytes) {
                 list.add(searchBestPos(image, b));
             }
@@ -147,9 +164,7 @@ public class Hider {
         final String name = keyFile.getName();
         int pixelIndex = Math.abs(name.hashCode()) % prod;
 
-        int argb = -1;
-        int x = -1;
-        int y = -1;
+        int argb, x, y;
 
         assert bitBuffer.size() % 3 == 0;
 
