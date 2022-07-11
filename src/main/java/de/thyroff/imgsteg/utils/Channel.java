@@ -49,12 +49,8 @@ public enum Channel {
             case ALPHA -> {
 
             }
-            case RED -> {
-                b[1] = true;
-            }
-            case GREEN -> {
-                b[0] = true;
-            }
+            case RED -> b[1] = true;
+            case GREEN -> b[0] = true;
             case BLUE -> {
                 b[0] = true;
                 b[1] = true;

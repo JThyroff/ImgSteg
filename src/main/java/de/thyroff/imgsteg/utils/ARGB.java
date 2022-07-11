@@ -18,7 +18,7 @@ public class ARGB {
     }
 
     public static int toARGB(int alpha, int red, int green, int blue) {
-        int toReturn = 0;
+        int toReturn;
         toReturn = (short) alpha << 24;
         toReturn += (short) red << 16;
         toReturn += (short) green << 8;
@@ -54,7 +54,7 @@ public class ARGB {
      * @return the new pixel
      */
     public static int inject(int argb, boolean bit1, boolean bit2, boolean bit3) {
-        int mask = 0;
+        int mask;
         // 0000_0000  0000_0000  0000_0000  0000_0000
         mask = 1 << 16; // red
         if (bit1) {
