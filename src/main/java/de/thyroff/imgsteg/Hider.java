@@ -4,7 +4,6 @@ import de.thyroff.imgsteg.utils.ARGB;
 import de.thyroff.imgsteg.utils.BitBuffer;
 import de.thyroff.imgsteg.utils.Channel;
 import de.thyroff.imgsteg.utils.MyPosition;
-import de.thyroff.randomiterator.FasterIterator;
 import org.javatuples.Pair;
 
 import javax.imageio.ImageIO;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Hider {
@@ -36,9 +36,9 @@ public class Hider {
      */
     private static MyPosition searchBestPos(BufferedImage image, byte b) {
         MyPosition bestPoint = null;
-        FasterIterator<Pair<Short, Short>> f = new FasterIterator<>(generatePixelList(image.getWidth(), image.getHeight()));
-        while (f.hasNext()) {
-            Pair<Short, Short> p = f.next();
+        List<Pair<Short, Short>> pairs = generatePixelList(image.getWidth(), image.getHeight());
+        Collections.shuffle(pairs);
+        for (Pair<Short, Short> p : pairs) {
             short x = p.getValue0();
             short y = p.getValue1();
 
