@@ -49,6 +49,7 @@ public class GUI implements UI {
         jFrame.setLocation(300, 300);
         jFrame.pack();
         jFrame.setVisible(true);
+        //jFrame.setResizable(false);
     }
 
     @Override
@@ -105,7 +106,9 @@ public class GUI implements UI {
          */
         private void addFileDisplay(GridBagConstraints c, int row, JPanel hidePanelPick, String fileName, String path) {
             JButton jButton = new JButton(fileName);
-            JLabel jLabel = new JLabel(path);
+            String[] split = path.split("/");
+
+            JLabel jLabel = new JLabel(split[split.length - 1]);
 
             JLabel picLabel = new JLabel(ImageHelper.getResizedImageIconFromPath(path));
             picLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -115,7 +118,7 @@ public class GUI implements UI {
                 File selectedFile = chooser.getSelectedFile();
                 String selectedFileAbsolutePath = selectedFile.getAbsolutePath();
                 System.getLogger("App").log(System.Logger.Level.INFO, fileName + "Selected File absolute Path : " + selectedFileAbsolutePath);
-                jLabel.setText(selectedFileAbsolutePath);
+                jLabel.setText(selectedFile.getName());
                 picLabel.setIcon(ImageHelper.getResizedImageIconFromPath(selectedFileAbsolutePath));
             });
 
