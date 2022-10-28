@@ -96,7 +96,7 @@ public class Revealer {
         bitBuffer.add((ARGB.getBlue(argb) % 2) == 1);
     }
 
-    private static byte getByte(BufferedImage image, MyPosition pos){
+    private static byte getByte(BufferedImage image, MyPosition pos) {
         int rgb = image.getRGB(pos.getX(), pos.getY());
         int alpha = (rgb >> 24) & 0xff;
         int red = (rgb >> 16) & 0xff;
@@ -125,11 +125,12 @@ public class Revealer {
 
     /**
      * reads the data from the given image at the given locations
-     * @param file to read the data from
+     *
+     * @param file        to read the data from
      * @param myPositions the position list
      * @return byte array of the data
      */
-    public static byte[] reveal(File file, List<MyPosition> myPositions){
+    public static byte[] reveal(File file, List<MyPosition> myPositions) {
         try {
             BufferedImage image = ImageIO.read(file);
             byte[] bytes = new byte[myPositions.size()];
@@ -148,5 +149,6 @@ public class Revealer {
             e.printStackTrace();
             throw new RuntimeException();
         }
+        
     }
 }
