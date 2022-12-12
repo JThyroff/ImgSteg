@@ -35,9 +35,10 @@ public class Hider {
      * @return the best location where the char can be hidden
      */
     private static MyPosition searchBestPos(BufferedImage image, byte b) {
-        MyPosition bestPoint = null;
         List<Pair<Short, Short>> pairs = generatePixelList(image.getWidth(), image.getHeight());
         Collections.shuffle(pairs);
+
+        MyPosition bestPoint = null;
         for (Pair<Short, Short> p : pairs) {
             short x = p.getValue0();
             short y = p.getValue1();
@@ -116,6 +117,8 @@ public class Hider {
     }
 
     /**
+     * Injects the list of positions into the key file.
+     *
      * @param keyFile Path to the Image where the Positions shall be hidden
      * @param list    the list of the Positions
      */

@@ -35,7 +35,7 @@ public class Revealer {
         //////     read key to buffer     //////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        //read size first 33 bit
+        //read list size first 33 bit
         for (int i = 0; i < 11; i++) {
             addToBuffer(image, width, pixelIndex, bitBuffer);
 
@@ -149,6 +149,6 @@ public class Revealer {
             e.printStackTrace();
             throw new RuntimeException();
         }
-        
+
     }
 }

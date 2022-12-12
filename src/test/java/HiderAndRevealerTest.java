@@ -35,6 +35,8 @@ public class HiderAndRevealerTest {
     }
 
     /**
+     * Writes three positions into a test file and extracts them again. The results should match.
+     *
      * @param path Path to the original image file
      */
     public void test_writeKeyIntoImage(String path) {
@@ -77,6 +79,7 @@ public class HiderAndRevealerTest {
             int height = image.getHeight();
             Random random = new Random();
             int entries = random.nextInt(Math.max((int) ((width * height) * 0.01), 5));
+            entries = Math.max(entries, 3); //minimum three entries
             for (int i = 0; i < entries; i++) {
                 expected.add(new MyPosition((short) random.nextInt(height), (short) random.nextInt(width), Channel.toChannel(random.nextInt(4)), (short) random.nextInt()));
             }
@@ -100,6 +103,9 @@ public class HiderAndRevealerTest {
         }
     }
 
+    /**
+     * Tests key injection for a big image.
+     */
     @Test
     public void keyTest1() {
         String path = getTestImgOriginalDir() + "/testImg1.jpg";
@@ -121,6 +127,9 @@ public class HiderAndRevealerTest {
         test_writeKeyIntoImageRnd(path);
     }
 
+    /**
+     * Hides and reveals the test messages and checks for same content. Full run test.
+     */
     @Test
     public void test_hide() {
         String pathFile = getTestImgOriginalDir() + "/blankKey84.png";
@@ -129,7 +138,6 @@ public class HiderAndRevealerTest {
 
         File copyFile = copyFile(new File(pathFile));
         File copyKey = copyFile(new File(pathKey));
-
 
         Hider.hide(copyFile, copyKey, pathMsg);
         try {

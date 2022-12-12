@@ -66,9 +66,12 @@ public class GUI implements UI {
     }
 
     private class HidePanel extends JPanel {
-        private String imagePath = "/home/jo/Workspace/ImgSteg/test/images/copy/copy_testImg1.jpg";
-        private String keyPath = "/home/jo/Workspace/ImgSteg/test/images/copy/copy_blankKey84.png";
-        private String fileToHidePath = "/home/jo/Workspace/ImgSteg/test/images/copy/copy_blankKey84White.png";
+        private static final String USER_DIR = System.getProperty("user.dir");
+
+        private static final String TEST_RESOURCE_DIR = USER_DIR + "/src/test/resources/";
+        private String imagePath = TEST_RESOURCE_DIR + "images/copy/copy_testImg1.jpg";
+        private String keyPath = TEST_RESOURCE_DIR + "images/copy/copy_blankKey84.png";
+        private String fileToHidePath = TEST_RESOURCE_DIR + "images/copy/copy_blankKey84White.png";
 
 
         public HidePanel(GUI gui) {
@@ -80,11 +83,6 @@ public class GUI implements UI {
             hidePanelPick.setLayout(mgr);
             GridBagConstraints c = new GridBagConstraints();
             mgr.setConstraints(hidePanelPick, c);
-
-            /*
-            hidePanelPick.add(getFileDisplay("Image", "/home/jo/Workspace/ImgSteg/test/images/copy/copy_testImg1.jpg"));
-            hidePanelPick.add(getFileDisplay("Key", "/home/jo/Workspace/ImgSteg/test/images/copy/copy_blankKey84.png"));
-            hidePanelPick.add(getFileDisplay("FileToHide", "/home/jo/Workspace/ImgSteg/test/images/copy/copy_blankKey84White.png"));*/
 
             try {
                 Field imagePathField = HidePanel.class.getDeclaredField("imagePath");
