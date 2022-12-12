@@ -16,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class HiderAndRevealerTest {
-
-    private static final String TEST_IMG_DIR = "test/images";
+    private static final String TEST_IMG_DIR = TestSuiteRunner.USER_DIR + "/src/test/resources/images/";
     private static final String ORIGINAL_DIR = "original";
     private static final String COPY_DIR = "copy";
 
@@ -31,12 +30,11 @@ public class HiderAndRevealerTest {
         return TEST_IMG_DIR + "/" + COPY_DIR;
     }
 
-    public static String getOutDir(){
+    public static String getOutDir() {
         return TEST_IMG_DIR + "/" + OUT_DIR;
     }
 
     /**
-     *
      * @param path Path to the original image file
      */
     public void test_writeKeyIntoImage(String path) {
@@ -65,7 +63,6 @@ public class HiderAndRevealerTest {
     }
 
     /**
-     *
      * @param path Path to the original image file
      */
     public void test_writeKeyIntoImageRnd(String path) {
@@ -79,7 +76,7 @@ public class HiderAndRevealerTest {
             int width = image.getWidth();
             int height = image.getHeight();
             Random random = new Random();
-            int entries = random.nextInt( Math.max((int)((width * height) * 0.01), 5));
+            int entries = random.nextInt(Math.max((int) ((width * height) * 0.01), 5));
             for (int i = 0; i < entries; i++) {
                 expected.add(new MyPosition((short) random.nextInt(height), (short) random.nextInt(width), Channel.toChannel(random.nextInt(4)), (short) random.nextInt()));
             }
@@ -125,7 +122,7 @@ public class HiderAndRevealerTest {
     }
 
     @Test
-    public void test_hide(){
+    public void test_hide() {
         String pathFile = getTestImgOriginalDir() + "/blankKey84.png";
         String pathKey = getTestImgOriginalDir() + "/blankKey84White.png";
         Path pathMsg = Path.of(getTestImgOriginalDir() + "/testMsg.txt");
@@ -139,14 +136,14 @@ public class HiderAndRevealerTest {
             ArrayList<MyPosition> keyFromImage = Revealer.extractKeyFromImage(copyKey);
             byte[] revealedData = Revealer.reveal(copyFile, keyFromImage);
 
-            try(FileOutputStream fos = new FileOutputStream(getOutDir() + "/outMsg")){
+            try (FileOutputStream fos = new FileOutputStream(getOutDir() + "/outMsg")) {
                 fos.write(revealedData);
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
             //check for same content
-            if (Files.mismatch(Path.of(getOutDir() + "/outMsg"), pathMsg) != -1){
+            if (Files.mismatch(Path.of(getOutDir() + "/outMsg"), pathMsg) != -1) {
                 fail();
             }
         } catch (IOException e) {
