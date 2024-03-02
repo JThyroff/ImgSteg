@@ -28,6 +28,17 @@ public class BitBuffer {
         add(toAdd, 16);
     }
 
+    public void add(byte[] bytes){
+        for(byte b : bytes){
+            for (int i = 0; i < 8; i++){
+                // write every single bit into the buffer
+                // starting at lowest bits going to highest
+                boolean bit = ((b >> i) & 1) == 1;
+                buffer.add(bit);
+            }
+        }
+    }
+
     public void add(boolean[] booleanArray) {
         for (boolean b : booleanArray) {
             buffer.add(b);

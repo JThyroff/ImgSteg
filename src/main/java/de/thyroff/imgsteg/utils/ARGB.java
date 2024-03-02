@@ -37,11 +37,11 @@ public class ARGB {
      * @param bits the bits
      * @return the new pixel
      */
-    public static int inject(int argb, boolean[] bits) {
+    public static int inject3(int argb, boolean[] bits) {
         if (bits.length != 3) {
             throw new IllegalArgumentException("Length has to be 3");
         }
-        return inject(argb, bits[0], bits[1], bits[2]);
+        return inject3(argb, bits[0], bits[1], bits[2]);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ARGB {
      * @param bit3 bit 3
      * @return the new pixel
      */
-    public static int inject(int argb, boolean bit1, boolean bit2, boolean bit3) {
+    public static int inject3(int argb, boolean bit1, boolean bit2, boolean bit3) {
         int mask;
         // 0000_0000  0000_0000  0000_0000  0000_0000
         mask = 1 << 16; // red

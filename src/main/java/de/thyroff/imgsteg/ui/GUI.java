@@ -9,12 +9,21 @@ import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GUI implements UI {
 
     private final JFileChooser chooser = new JFileChooser();
+    private static final Logger logger = Logger.getLogger(Hider.class.getName());
 
     public static void main(String[] args) {
+        Handler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.FINER);
+        Logger.getAnonymousLogger().addHandler(consoleHandler);
+
         FlatLightLaf.setup();
         new GUI();
     }
@@ -162,9 +171,9 @@ public class GUI implements UI {
         }
 
         private void hidePanelUpdate() {
-            System.getLogger("App").log(System.Logger.Level.INFO, "imagePath : " + imagePath);
-            System.getLogger("App").log(System.Logger.Level.INFO, "keyPath : " + keyPath);
-            System.getLogger("App").log(System.Logger.Level.INFO, "fileToHidePath : " + fileToHidePath);
+            logger.log(Level.FINE, "imagePath : " + imagePath);
+            logger.log(Level.FINE, "keyPath : " + keyPath);
+            logger.log(Level.FINE, "fileToHidePath : " + fileToHidePath);
         }
     }
 
