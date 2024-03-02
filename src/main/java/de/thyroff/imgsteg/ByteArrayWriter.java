@@ -47,6 +47,12 @@ public class ByteArrayWriter {
         bitBuffer.add(buffer.length);
         bitBuffer.add(buffer);
 
+        //do some bit stuffing
+        //fill to a multiple of 3 to guarantee a simple write to pixels
+        if (bitBuffer.size() % 3 != 0) {
+            bitBuffer.add(new boolean[3 - bitBuffer.size() % 3]);
+        }
+
         ////////////////////////////////////////////////////////////////////////////
         //////     do injection     ////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
