@@ -3,6 +3,9 @@ package de.thyroff.imgsteg.utils;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * BitBuffer. Appends new Elements in the back and removes in the front at index 0.
+ */
 public class BitBuffer {
 
     private final ArrayList<Boolean> buffer = new ArrayList<>();

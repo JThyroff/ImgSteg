@@ -101,4 +101,37 @@ public class BitBufferTest {
 
         assertArrayEquals(expected, bitBuffer.removeBooleanArray(6));
     }
+
+    @Test
+    public void addAndRemoveByte(){
+        BitBuffer bitBuffer = new BitBuffer();
+        byte expected = (byte) 0x48;
+        bitBuffer.add(expected);
+
+        assertEquals(expected, bitBuffer.removeByte());
+    }
+
+    @Test
+    public void addAndRemoveByteArray(){
+        BitBuffer bitBuffer = new BitBuffer();
+        byte [] expected = new byte[3];
+        expected[0] = (byte) 0x91;
+        expected[1] = (byte) 0x1F;
+        expected[2] = (byte) 0x10;
+
+        bitBuffer.add(true);
+        bitBuffer.add(false);
+
+        //Add expected
+        bitBuffer.add(expected);
+
+        bitBuffer.removeBooleanArray(2);
+
+        bitBuffer.add(true);
+        bitBuffer.add(false);
+
+        assertArrayEquals(expected, bitBuffer.removeByteArray(3));
+        //remaining two booleans
+        assertEquals(bitBuffer.size(), 2);
+    }
 }
