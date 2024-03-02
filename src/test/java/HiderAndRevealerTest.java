@@ -12,8 +12,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class HiderAndRevealerTest {
     private static final String TEST_IMG_DIR = TestSuiteRunner.USER_DIR + "/src/test/resources/images/";
