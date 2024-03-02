@@ -1,5 +1,6 @@
 package de.thyroff.imgsteg.utils;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class BitBuffer {
@@ -37,6 +38,21 @@ public class BitBuffer {
                 buffer.add(bit);
             }
         }
+    }
+
+    /**
+     * adds bits from one pixel to the buffer
+     *
+     * @param image      the image
+     * @param width      the width
+     * @param pixelIndex the pixel index
+     */
+    public void add(BufferedImage image, int width, int pixelIndex) {
+        int argb = image.getRGB(pixelIndex % width, pixelIndex / width);
+
+        buffer.add((ARGB.getRed(argb) % 2) == 1);
+        buffer.add((ARGB.getGreen(argb) % 2) == 1);
+        buffer.add((ARGB.getBlue(argb) % 2) == 1);
     }
 
     public void add(boolean[] booleanArray) {
@@ -88,6 +104,21 @@ public class BitBuffer {
         }
         return toReturn;
     }
+    /**
+     * @return the first 8 bit in the buffer as byte
+     */
+    public byte removeByte() {
+        if (this.size() < 8) {
+            throw new RuntimeException("Buffer is not large enough to remove byte");
+        }
+        byte toReturn = 0;
+        for (int i = 0; i < 8; i++) {
+            if (this.removeFirst()) {
+                toReturn += 1 << i;
+            }
+        }
+        return toReturn;
+    }
 
     /**
      * removes a boolean array from the buffer
@@ -102,6 +133,23 @@ public class BitBuffer {
         boolean[] b = new boolean[length];
         for (int i = 0; i < length; i++) {
             b[i] = this.removeFirst();
+        }
+        return b;
+    }
+
+    /**
+     * removes a byte array from the buffer
+     *
+     * @param length the length of the array which shall be returned
+     * @return the array
+     */
+    public byte[] removeByteArray(int length) {
+        if (this.size() < length) {
+            throw new RuntimeException("Buffer is not large enough to remove " + length + " bytes");
+        }
+        byte[] b = new byte[length];
+        for (int i = 0; i < length; i++) {
+            b[i] = removeByte();
         }
         return b;
     }

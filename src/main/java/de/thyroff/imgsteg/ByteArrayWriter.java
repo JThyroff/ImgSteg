@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ByteStreamWriter {
+public class ByteArrayWriter {
     private static final Logger logger = Logger.getLogger(Hider.class.getName());
 
 
@@ -22,21 +22,21 @@ public class ByteStreamWriter {
      * @throws IOException If an I/O error occurs while reading the image file.
      * @throws IllegalArgumentException If the buffer does not fit into the image.
      */
-    public static void writeByteStreamIntoImage(byte[] buffer, File image) throws IOException {
+    public static void writeByteArrayIntoImage(byte[] buffer, File image) throws IOException {
         logger.log(Level.FINER, "write byte stream into image.");
 
         BufferedImage bufferedImage = ImageIO.read(image);
 
         final int width = bufferedImage.getWidth();
         final int height = bufferedImage.getHeight();
-        final int pixelcount = width * height;
+        final int pixelCount = width * height;
 
         /* do a check if the buffer fits the image
         * we only want to use the lowest bits per color channel and only the RGB channels (no alpha)
         * means we can fit 3 bits per pixel and a byte has 8 bit
          */
         //TODO upgrade to two lowest bits per pixel
-        if (buffer.length * 8 > pixelcount * 3){
+        if (buffer.length * 8 > pixelCount * 3){
             throw new IllegalArgumentException("Buffer doesn't fit the image.");
         }
 
@@ -67,7 +67,7 @@ public class ByteStreamWriter {
             bufferedImage.setRGB(x, y, argb);
 
             pixelIndex++;
-            assert pixelIndex <= pixelcount;
+            assert pixelIndex <= pixelCount;
         }
         //overwrite the image file
         ImageIO.write(bufferedImage, "png", image);
