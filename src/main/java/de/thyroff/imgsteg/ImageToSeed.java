@@ -10,17 +10,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class ImageToSeed {
 
-    public static void main(String[] args) {
-        String imagePath = "example_image.jpg";
-        long seed = imageToSeed(imagePath);
-        System.out.println("Random seed generated from the image: " + seed);
-
-        // Now you can use the seed to initialize a random number generator
-        // For example:
-        // Random random = new Random(seed);
-    }
-
-    public static long imageToSeed(String imagePath) {
+    public static byte[] imageToSeed(String imagePath) {
         try {
             // Read the image
             BufferedImage image = ImageIO.read(new File(imagePath));
@@ -38,7 +28,7 @@ public class ImageToSeed {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0; // Error occurred, return default seed value
+        return null; // Error occurred, return default seed value
     }
 
     private static byte[] toByteArray(BufferedImage image) throws IOException {
@@ -52,23 +42,17 @@ public class ImageToSeed {
         return imageData;
     }
 
-    private static long hashByteArray(byte[] data) {
+    private static byte[] hashByteArray(byte[] data) {
         try {
             // Calculate SHA-256 hash of the byte array
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(data);
 
-            // Convert hash bytes to long value
-            long hashValue = 0;
-            for (int i = 0; i < 8; i++) {
-                hashValue <<= 8;
-                hashValue |= (hash[i] & 0xFF);
-            }
-            return hashValue;
+            return hash;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return 0; // Error occurred, return default hash value
+        return null; // Error occurred, return default hash value
     }
 }
 
