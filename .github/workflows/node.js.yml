@@ -41,13 +41,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    defaults:
-      run:
-        working-directory: 'reactimgsteg'
+
     steps:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: build
+          FOLDER: reactimgsteg/build
