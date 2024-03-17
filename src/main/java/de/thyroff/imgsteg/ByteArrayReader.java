@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ByteArrayReader {
-    private static final Logger logger = Logger.getLogger(Hider.class.getName());
+    private static final Logger logger = Logger.getLogger(ByteArrayReader.class.getName());
 
     /**
      * Reads Byte Stream from the provided Image. Simply takes the lowest bits of RGB color channels without any other logic. Starting at 0 / 0.
@@ -23,8 +23,6 @@ public class ByteArrayReader {
         BufferedImage bufferedImage = ImageIO.read(image);
 
         final int width = bufferedImage.getWidth();
-        final int height = bufferedImage.getHeight();
-        final int pixelCount = width * height;
 
         int pixelIndex = 0;
 

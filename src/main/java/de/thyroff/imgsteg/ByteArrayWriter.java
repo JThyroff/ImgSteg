@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ByteArrayWriter {
-    private static final Logger logger = Logger.getLogger(Hider.class.getName());
+    private static final Logger logger = Logger.getLogger(ByteArrayWriter.class.getName());
 
 
     /**
