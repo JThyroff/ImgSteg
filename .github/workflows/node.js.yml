@@ -20,9 +20,12 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
     - name: Navigate to subfolder
-      run: cd reactimgsteg
+      run: |
+        cd reactimgsteg
+        ls -al
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
