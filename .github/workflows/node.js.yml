@@ -49,14 +49,22 @@ jobs:
     needs: build
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: build-artifacts
           path: reactimgsteg/build
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
           TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
           FOLDER: reactimgsteg/build
+          CLEAN: true
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}/reactimgsteg
+
