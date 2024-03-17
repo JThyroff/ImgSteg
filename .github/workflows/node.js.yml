@@ -65,6 +65,4 @@ jobs:
           BRANCH: gh-pages
           FOLDER: reactimgsteg/build
           CLEAN: true
-        env:
-          GITHUB_WORKSPACE: ${{ github.workspace }}/reactimgsteg
 
