@@ -15,9 +15,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Hider {
 
+    private static final Logger logger = Logger.getLogger(Hider.class.getName());
+
+    static {
+        logger.setLevel(Level.FINER);
+    }
 
     public static List<Pair<Short, Short>> generatePixelList(int width, int height) {
         List<Pair<Short, Short>> l = new ArrayList<>();
@@ -35,9 +42,15 @@ public class Hider {
      * @return the best location where the char can be hidden
      */
     private static MyPosition searchBestPos(BufferedImage image, byte b) {
-        MyPosition bestPoint = null;
+        long startTime = System.currentTimeMillis();
         List<Pair<Short, Short>> pairs = generatePixelList(image.getWidth(), image.getHeight());
+        long pixelListTime = System.currentTimeMillis();
+        logger.log(Level.FINE, "generatePixelList time: " + (pixelListTime - startTime));
         Collections.shuffle(pairs);
+        long shuffleTime = System.currentTimeMillis();
+        logger.log(Level.FINE, "Shuffle time: " + (shuffleTime - pixelListTime));
+
+        MyPosition bestPoint = null;
         for (Pair<Short, Short> p : pairs) {
             short x = p.getValue0();
             short y = p.getValue1();
@@ -65,6 +78,8 @@ public class Hider {
 
             if (m != null) {
                 // suitable location found
+                logger.log(Level.FINE, "search time: " + (System.currentTimeMillis() - shuffleTime));
+                logger.log(Level.FINE, "");
                 return m;
             }
 
@@ -94,6 +109,8 @@ public class Hider {
                 bestPoint = new MyPosition(x, y, channel, localOffset);
             }
         }
+        logger.log(Level.FINE, "search time (no suitable location found. Mit offset): " + (System.currentTimeMillis() - shuffleTime));
+        logger.log(Level.FINE, "");
 
         return bestPoint;
     }
@@ -116,6 +133,8 @@ public class Hider {
     }
 
     /**
+     * Injects the list of positions into the key file.
+     *
      * @param keyFile Path to the Image where the Positions shall be hidden
      * @param list    the list of the Positions
      */
@@ -139,8 +158,7 @@ public class Hider {
             );
         } else {
             System.out.println(
-                    "Msg length okay."
-                            + "\nMessage Bit Length: " + msgBitLength
+                    "Message Bit Length: " + msgBitLength
                             + "\nAllowed Length: " + prod * 3
             );
         }
@@ -181,7 +199,7 @@ public class Hider {
             y = pixelIndex / width;
 
             argb = image.getRGB(x, y);
-            argb = ARGB.inject(argb, bit1, bit2, bit3);
+            argb = ARGB.inject3(argb, bit1, bit2, bit3);
             image.setRGB(x, y, argb);
 
             pixelIndex++;
@@ -192,6 +210,7 @@ public class Hider {
         }
         ImageIO.write(image, "png", keyFile);
     }
+
 
     /**
      * 50 bit per position

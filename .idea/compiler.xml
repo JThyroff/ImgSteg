@@ -9,8 +9,5 @@
         <module name="ImgSteg" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ImgSteg" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

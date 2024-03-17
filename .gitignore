@@ -120,4 +120,4 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
-/test/images/copy/
+src/test/resources/images/copy/
