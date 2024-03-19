@@ -9,28 +9,30 @@ import { imageToSeed } from './utils/ImageToSeed';
 
 function App() {
   // State to store the input and seed files
-  const [inputFile, setInputFile] = useState(null);
-  const [seedFile, setSeedFile] = useState(null);
+  const [imgInputFile, setImgInputFile] = useState(null);
+  const [seedInputFile, setSeedInputFile] = useState(null);
+  const [secretInputFile, setSecretInputFile] = useState(null);
   const [toggleState, setToggleState] = useState(false);
 
-  const handleDropInput = (acceptedFiles) => {
+  const handleDropImage = (acceptedFiles) => {
     console.log('Input Files:', acceptedFiles);
-    setInputFile(acceptedFiles[0]);
+    setImgInputFile(acceptedFiles[0]);
   };
 
   const handleDropSeed = (acceptedFiles) => {
     console.log('Seed Files:', acceptedFiles);
-    setSeedFile(acceptedFiles[0]);
+    setSeedInputFile(acceptedFiles[0]);
   };
 
-  const handleDownload = () => {
-    console.log('Download');
-  };
+  const handleDropSecret = (acceptedFiles) => {
+    console.log('Secret Files: ', acceptedFiles);
+    setSecretInputFile(acceptedFiles[0]);
+  }
 
   const process = async () => {
     console.log('Process');
 
-    if (!inputFile || !seedFile) {
+    if (!imgInputFile || !seedInputFile) {
       console.log('Missing files');
       return;
     }
@@ -42,7 +44,7 @@ function App() {
       console.log('Reveal');
     } else {
       console.log('Hide');
-      const hash = await imageToSeed(seedFile);
+      const hash = await imageToSeed(seedInputFile);
       console.log("Hash value of the seed image: " + hash); // This is the SHA-256 hash of the image
     }
 
@@ -72,7 +74,7 @@ function App() {
       <header className="App-header">
         {/* Top-left grid cell */}
         <div className="grid-item">
-          <MyDropzone onDrop={handleDropInput} accept="image/*" text="Drop input image here. Must be of type *.png." />
+          <MyDropzone onDrop={handleDropImage} accept="image/*" text="Drop input image here. Must be of type *.png." />
         </div>
 
         {/* Top-right grid cell */}
@@ -81,8 +83,8 @@ function App() {
         </div>
 
         {/* Bottom-left grid cell */}
-        <div className="grid-item" style={{ border: '2px dashed black' }}>
-          <MyDropzone onDrop={handleDropInput} accept="image/*" text="Drop input file here. Can be an arbitrary type. Only necessary for 'Hide'." />
+        <div className="grid-item">
+          <MyDropzone onDrop={handleDropSecret} accept="image/*" text="Drop input file here. Can be an arbitrary type. Only necessary for 'Hide'." />
         </div>
 
         {/* Bottom-right grid cell */}
