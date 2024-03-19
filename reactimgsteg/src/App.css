@@ -30,19 +30,30 @@
   /* Aligns items to the start of the cell */
   justify-content: center;
   /* Centers content horizontally */
-  padding: 20px;
+  padding: 30px;
   /* Add padding to the header */
   position: relative;
   /* Needed for absolute positioning of children */
 }
 
 .grid-item {
-
   display: flex;
   align-items: center;
   /* This will vertically center the text in the dropzone */
   justify-content: center;
   /* This will horizontally center the text in the dropzone */
+  flex-direction: column;
+  /* Stack children vertically */
+  margin: 20px;
+  min-height: 200px;
+
+}
+
+.rightarrow {
+  height: 15vmin;
+  pointer-events: none;
+  bottom: 0;
+  right: 0;
 }
 
 /* Ensure the dropzone div itself also fills its container */
@@ -58,6 +69,30 @@
   /* Additional styles as needed */
   background-color: #2c3038;
   color: white;
+}
+
+/* Style for the process button */
+.process-button {
+  background-color: #f0f0f0;
+  /* Light grey background */
+  border: none;
+  /* No border */
+  padding: 10px 20px;
+  /* Padding around the text */
+  margin-top: 20px;
+  /* Space between the arrow and the button */
+  cursor: pointer;
+  /* Cursor indicates it's clickable */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  /* Subtle shadow for depth */
+  border-radius: 5px;
+  /* Rounded corners */
+}
+
+.download-button {
+  width: 30%;
+  height: 100%;
+  min-height: 30px;
 }
 
 .App-link {

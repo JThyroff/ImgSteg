@@ -2,6 +2,7 @@ import React from 'react';
 import MyDropzone from './components/MyDropzone';
 import MyToggle from './components/MyToggle';
 import logo from './logo.svg';
+import rightarrow from './rightarrow.svg';
 import './App.css';
 
 function App() {
@@ -15,6 +16,10 @@ function App() {
 
   const handleDownload = () => {
     console.log('Download');
+  };
+
+  const process = () => {
+    console.log('Process');
   };
 
   return (
@@ -33,17 +38,22 @@ function App() {
         {/* Bottom-left grid cell */}
         <div className="grid-item">
           <MyToggle />
+          {/* Arrow container */}
+          <img src={rightarrow} className="rightarrow" alt="rightarrow" />
+
+          {/* Process button */}
+          <button className="process-button" onClick={process}>Process</button>
         </div>
 
         {/* Bottom-right grid cell */}
-        <div className="grid-item">
-          <button onClick={handleDownload}>Download</button>
+        <div className="grid-item" style={{ border: '2px dashed black' }}>
+          <button className="download-button" onClick={handleDownload}>Download</button>
         </div>
 
         {/* You might want to place the logo outside of the header or in its own grid cell */}
         <img src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div>
+      </header >
+    </div >
   );
 }
 
