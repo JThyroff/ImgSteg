@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders dropzones', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const dropzoneInputText = screen.getByText(/Drop input*/i);
+  const dropzoneSeedText = screen.getByText(/Drop seed image*/i);
+  expect(dropzoneInputText).toBeInTheDocument();
+  expect(dropzoneSeedText).toBeInTheDocument();
 });

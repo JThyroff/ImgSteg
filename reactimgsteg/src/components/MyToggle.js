@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
-import Switch from 'react-switch';
+import './MyToggle.css'; // Make sure to import the CSS file for styling
 
-function MyToggle() {
-  const [checked, setChecked] = useState(false);
+const MyToggle = () => {
+    const [isToggled, setIsToggled] = useState(false);
 
-  const handleChange = (nextChecked) => {
-    setChecked(nextChecked);
-  };
+    const toggleSwitch = () => {
+        setIsToggled(!isToggled);
+    };
 
-  return (
-    <label>
-      <span>Hide</span>
-      <Switch
-        onChange={handleChange}
-        checked={checked}
-        offColor="#888"
-        onColor="#4D4D4D"
-        uncheckedIcon={false}
-        checkedIcon={false}
-        height={20}
-        width={48}
-        handleDiameter={24}
-      />
-      <span>Reveal</span>
-    </label>
-  );
-}
+    return (
+        <div className="toggle-switch" onClick={toggleSwitch}>
+            <div className="toggle-label-reveal">Reveal</div>
+            <div className="toggle-label-hide">Hide</div>
+            <div className={`toggle-btn ${isToggled ? 'toggled' : ''}`} >
+                <div className="toggle-btn-inner">
+                    <div className="toggle-text">{isToggled ? 'Reveal' : 'Hide'}</div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default MyToggle;

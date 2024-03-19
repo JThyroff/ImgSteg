@@ -1,0 +1,86 @@
+.toggle-switch {
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    position: relative;
+    width: 180px;
+    /* Width of the entire toggle switch */
+    height: 50px;
+    /* Height of the entire toggle switch */
+    background-color: #444;
+    /* Background of the non-selected part */
+    border-radius: 30px;
+    /* Half the height to make it rounded */
+    transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-btn {
+    position: absolute;
+    width: 50%;
+    /* Half the width of its parent to show two sides */
+    height: 100%;
+    background-color: #ccc;
+    /* Background of the selected part */
+    border-radius: 30px;
+    /* Same as parent to keep it rounded */
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.toggle-btn.toggled {
+    transform: translateX(100%);
+    /* Move the toggle to the right */
+}
+
+.toggle-btn-inner {
+    display: flex;
+    align-items: center;
+    /* Center the text vertically */
+    justify-content: center;
+    /* Center the text horizontally */
+    height: 100%;
+    color: black;
+    /* Text color */
+}
+
+.toggle-label-hide {
+    position: absolute;
+    /* Position it within toggle-switch */
+    top: 30%;
+    /* Center vertically */
+    left: 0;
+    /* Start from the left edge */
+    right: 50%;
+    /* Center vertically */
+    text-align: center;
+    /* Center the text horizontally */
+    z-index: 0;
+    /* Below the handle but above the background */
+    pointer-events: none;
+    /* Clicks will "pass through" to the element below */
+    color: white;
+    /* Text color */
+}
+
+.toggle-label-reveal {
+    position: absolute;
+    /* Position it within toggle-switch */
+    top: 30%;
+    /* Center vertically */
+    left: 50%;
+    /* Start from the left edge */
+    right: 0;
+    /* Stretch to the right edge */
+    text-align: center;
+    /* Center the text horizontally */
+    z-index: 0;
+    /* Below the handle but above the background */
+    pointer-events: none;
+    /* Clicks will "pass through" to the element below */
+    color: white;
+    /* Text color */
+}
+
+.toggle-text {
+    z-index: 1;
+    /* Ensure the text is above the circle button */
+}
