@@ -56,20 +56,6 @@
   right: 0;
 }
 
-/* Ensure the dropzone div itself also fills its container */
-.dropzone {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 200px;
-  /* Set a minimum height for the dropzones */
-  /* Additional styles as needed */
-  background-color: #2c3038;
-  color: white;
-}
 
 /* Style for the process button */
 .process-button {
