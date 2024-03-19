@@ -5,7 +5,9 @@ import logo from './logo.svg';
 import rightarrow from './rightarrow.svg';
 import './App.css';
 import { imageToSeed } from './utils/ImageToSeed';
-
+import { readFileAsArrayBuffer } from './utils/FileToByteArray';
+import { DataEncryptor } from './utils/DataEncryptor';
+import { ByteArrayToHex } from './utils/ByteArrayToHex';
 
 function App() {
   // State to store the input and seed files
@@ -29,6 +31,8 @@ function App() {
     setSecretInputFile(acceptedFiles[0]);
   }
 
+
+
   const process = async () => {
     console.log('Process');
 
@@ -44,8 +48,12 @@ function App() {
       console.log('Reveal');
     } else {
       console.log('Hide');
-      const hash = await imageToSeed(seedInputFile);
-      console.log("Hash value of the seed image: " + hash); // This is the SHA-256 hash of the image
+      const seed = await imageToSeed(seedInputFile);
+      console.log("Hash value of the seed image: " + ByteArrayToHex.bytesToHex(seed)); // This is the SHA-256 hash of the image
+
+      const arrayBuffer = await readFileAsArrayBuffer(secretInputFile);
+      const byteArray = new Uint8Array(arrayBuffer);
+      const encryptedData = await DataEncryptor.encryptData(byteArray, seed);
     }
 
     /*// Example processing logic: creating a new file to download

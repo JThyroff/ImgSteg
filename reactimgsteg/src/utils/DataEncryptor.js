@@ -1,4 +1,4 @@
-class DataEncryptor {
+export class DataEncryptor {
     static async encryptData(data, seed) {
         // Import the key for encryption
         const key = await window.crypto.subtle.importKey(
@@ -51,6 +51,7 @@ class DataEncryptor {
         return new Uint8Array(decryptedData);
     }
 }
+
 
 /*// Example usage
 (async () => {
