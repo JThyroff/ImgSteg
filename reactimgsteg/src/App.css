@@ -3,8 +3,11 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 5vmin;
   pointer-events: none;
+  bottom: 0;
+  right: 0;
+  position: absolute;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -15,13 +18,45 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 95vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* Creates two columns of equal width */
+  grid-template-rows: repeat(2, 1fr);
+  /* Defines the size of the rows */
+  gap: 20px;
+  /* Adds space between grid items */
+  align-items: start;
+  /* Aligns items to the start of the cell */
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  /* Centers content horizontally */
+  padding: 20px;
+  /* Add padding to the header */
+  position: relative;
+  /* Needed for absolute positioning of children */
+}
+
+.grid-item {
+
+  display: flex;
+  align-items: center;
+  /* This will vertically center the text in the dropzone */
+  justify-content: center;
+  /* This will horizontally center the text in the dropzone */
+}
+
+/* Ensure the dropzone div itself also fills its container */
+.dropzone {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 200px;
+  /* Set a minimum height for the dropzones */
+  /* Additional styles as needed */
+  background-color: #2a2e36;
 }
 
 .App-link {
@@ -32,6 +67,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
