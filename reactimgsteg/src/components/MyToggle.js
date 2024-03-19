@@ -6,6 +6,9 @@ const MyToggle = () => {
 
     const toggleSwitch = () => {
         setIsToggled(!isToggled);
+        // Log the current state of the toggle
+        // true = Hide, false = Reveal
+        console.log('The toggle is now', isToggled ? 'Hide' : 'Reveal');
     };
 
     return (
