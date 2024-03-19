@@ -5,9 +5,10 @@ import logo from './logo.svg';
 import rightarrow from './rightarrow.svg';
 import './App.css';
 import { imageToSeed } from './utils/ImageToSeed';
-import { readFileAsArrayBuffer } from './utils/FileToByteArray';
+import { convertFileToUint8Array, convertUint8ArrayToFile } from './utils/FileByteArrayConverter';
 import { DataEncryptor } from './utils/DataEncryptor';
 import { ByteArrayToHex } from './utils/ByteArrayToHex';
+import { triggerDownload } from './utils/TriggerDownload';
 
 function App() {
   // State to store the input and seed files
@@ -46,14 +47,22 @@ function App() {
 
     if (toggleState) {
       console.log('Reveal');
+
+      const decryptedData = await DataEncryptor.decryptData(encryptedData, seed);
+      const decryptedFile = await convertUint8ArrayToFile(decryptedData, "decryptedFile_change_file_ending.aaa")
+
+      triggerDownload(decryptedFile);
     } else {
       console.log('Hide');
       const seed = await imageToSeed(seedInputFile);
       console.log("Hash value of the seed image: " + ByteArrayToHex.bytesToHex(seed)); // This is the SHA-256 hash of the image
 
-      const arrayBuffer = await readFileAsArrayBuffer(secretInputFile);
-      const byteArray = new Uint8Array(arrayBuffer);
+      //encrypt the secret file with the seed
+      const byteArray = await convertFileToUint8Array(secretInputFile);
       const encryptedData = await DataEncryptor.encryptData(byteArray, seed);
+
+      //write the resulting encrypted data into the input image
+      
     }
 
     /*// Example processing logic: creating a new file to download
