@@ -1,4 +1,4 @@
-class BitBuffer {
+export class BitBuffer {
     constructor() {
       this.buffer = [];
     }

@@ -1,4 +1,4 @@
-const ARGB = {
+export const ARGB = {
     getRed: function (argb) {
         return (argb >> 16) & 0xff;
     },
@@ -26,12 +26,12 @@ const ARGB = {
         return (alpha << 24) | (red << 16) | (green << 8) | blue;
     },
 
-    inject3: function (argb, bits) {
+    /*inject3: function (argb, bits) {
         if (bits.length !== 3) {
-            throw new Error("Length has to be 3");
+            throw new Error("Length has to be 3. Actual Length: " + bits.length);
         }
         return this.inject3Bits(argb, bits[0], bits[1], bits[2]);
-    },
+    },*/
 
     inject3Bits: function (argb, bit1, bit2, bit3) {
         let mask;

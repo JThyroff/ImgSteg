@@ -1,4 +1,6 @@
-class ByteArrayWriter {
+import { ARGB } from "./ARGB";
+import { BitBuffer } from "./BitBuffer";
+export class ByteArrayWriter {
     /**
      * Injects a byte stream into an image's pixel data.
      * @param {Uint8Array} buffer - The byte stream to be injected.
@@ -13,7 +15,7 @@ class ByteArrayWriter {
 
         // Check if the buffer fits into the image
         if (buffer.length * 8 > pixelCount * 3) {
-            throw new Error("Buffer doesn't fit the image.");
+            throw new Error("Buffer doesn't fit the image. buffer.length * 8 = " + (buffer.length * 8) + " and pixelcount * 3 = " + (pixelCount * 3));
         }
 
         // Write byte array into bit buffer
@@ -39,13 +41,14 @@ class ByteArrayWriter {
             y = Math.floor(index / width);
 
             argb = this.getARGBFromImageData(imageData, x, y);
-            argb = ARGB.inject3(argb, bit1, bit2, bit3);
+            argb = ARGB.inject3Bits(argb, bit1, bit2, bit3);
             this.setARGBIntoImageData(imageData, x, y, argb);
 
             index++;
         }
 
         console.log("Byte stream written into image.");
+        return imageData;
     }
 
     static getARGBFromImageData(imageData, x, y) {

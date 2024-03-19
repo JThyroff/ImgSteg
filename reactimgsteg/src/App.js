@@ -9,6 +9,8 @@ import { convertFileToUint8Array, convertUint8ArrayToFile } from './utils/FileBy
 import { DataEncryptor } from './utils/DataEncryptor';
 import { ByteArrayToHex } from './utils/ByteArrayToHex';
 import { triggerDownload } from './utils/TriggerDownload';
+import { ByteArrayWriter } from './utils/ByteArrayWriter';
+import { getImageDataFromImageFile, createImageFileFromImageData } from './utils/ImageToImageDataConverter';
 
 function App() {
   // State to store the input and seed files
@@ -47,11 +49,11 @@ function App() {
 
     if (toggleState) {
       console.log('Reveal');
-
+      /*
       const decryptedData = await DataEncryptor.decryptData(encryptedData, seed);
       const decryptedFile = await convertUint8ArrayToFile(decryptedData, "decryptedFile_change_file_ending.aaa")
 
-      triggerDownload(decryptedFile);
+      triggerDownload(decryptedFile);*/
     } else {
       console.log('Hide');
       const seed = await imageToSeed(seedInputFile);
@@ -62,7 +64,22 @@ function App() {
       const encryptedData = await DataEncryptor.encryptData(byteArray, seed);
 
       //write the resulting encrypted data into the input image
-      
+      getImageDataFromImageFile(imgInputFile).then(imageData => {
+        // Use imageData here
+        const imgDataNew = ByteArrayWriter.writeByteArrayIntoImage(encryptedData, imageData)
+        createImageFileFromImageData(imgDataNew, "NewImage.png").then(newImage => {
+          triggerDownload(newImage)
+        }).catch(error => {
+          console.error('Error processing image file:', error);
+        });
+      }).catch(error => {
+        console.error('Error processing image file:', error);
+      });
+
+      //const newImgData = ByteArrayWriter.writeByteArrayIntoImage(encryptedData, imgData)
+
+      //const newImage = createImageFileFromImageData(imgData, "NewImage.png")
+      //triggerDownload(newImage)
     }
 
     /*// Example processing logic: creating a new file to download
