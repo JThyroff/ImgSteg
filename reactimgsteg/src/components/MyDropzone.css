@@ -12,6 +12,8 @@
     /* Stack children vertically */
     background-color: #2c3038;
     color: white;
+    border-style: dashed;
+    border-color: black;
 }
 
 .file-info {

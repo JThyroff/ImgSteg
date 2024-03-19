@@ -4,6 +4,8 @@ import MyToggle from './components/MyToggle';
 import logo from './logo.svg';
 import rightarrow from './rightarrow.svg';
 import './App.css';
+import { imageToSeed } from './utils/ImageToSeed';
+
 
 function App() {
   // State to store the input and seed files
@@ -25,7 +27,7 @@ function App() {
     console.log('Download');
   };
 
-  const process = () => {
+  const process = async () => {
     console.log('Process');
 
     if (!inputFile || !seedFile) {
@@ -33,10 +35,15 @@ function App() {
       return;
     }
 
+    //TODO do checks if the files are matching the theoretical requirements and display error msgs
+
+
     if (toggleState) {
       console.log('Reveal');
     } else {
       console.log('Hide');
+      const hash = await imageToSeed(seedFile);
+      console.log("Hash value of the seed image: " + hash); // This is the SHA-256 hash of the image
     }
 
     /*// Example processing logic: creating a new file to download
@@ -65,15 +72,20 @@ function App() {
       <header className="App-header">
         {/* Top-left grid cell */}
         <div className="grid-item">
-          <MyDropzone onDrop={handleDropInput} accept="image/*" text="Drop input here. Must be of type *.png for 'Reveal' and can be arbitrary file for 'Hide'" />
+          <MyDropzone onDrop={handleDropInput} accept="image/*" text="Drop input image here. Must be of type *.png." />
         </div>
 
         {/* Top-right grid cell */}
         <div className="grid-item">
-          <MyDropzone onDrop={handleDropSeed} accept="image/*" text="Drop seed image here. Type *.png" />
+          <MyDropzone onDrop={handleDropSeed} accept="image/*" text="Drop seed image here. Must be of type *.png." />
         </div>
 
         {/* Bottom-left grid cell */}
+        <div className="grid-item" style={{ border: '2px dashed black' }}>
+          <MyDropzone onDrop={handleDropInput} accept="image/*" text="Drop input file here. Can be an arbitrary type. Only necessary for 'Hide'." />
+        </div>
+
+        {/* Bottom-right grid cell */}
         <div className="grid-item">
           <MyToggle onToggle={handleToggle} />
           {/* Arrow container */}
@@ -81,11 +93,6 @@ function App() {
 
           {/* Process button */}
           <button className="process-button" onClick={process}>Process</button>
-        </div>
-
-        {/* Bottom-right grid cell */}
-        <div className="grid-item" style={{ border: '2px dashed black' }}>
-          <button className="download-button" onClick={handleDownload}>Download</button>
         </div>
 
         {/* You might want to place the logo outside of the header or in its own grid cell */}
