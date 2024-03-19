@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './MyToggle.css'; // Make sure to import the CSS file for styling
 
-const MyToggle = () => {
+const MyToggle = ({ onToggle }) => {
     const [isToggled, setIsToggled] = useState(false);
 
     const toggleSwitch = () => {
         setIsToggled(!isToggled);
+        if (onToggle) { onToggle(!isToggled); }
         // Log the current state of the toggle
         // true = Hide, false = Reveal
         console.log('The toggle is now', isToggled ? 'Hide' : 'Reveal');
