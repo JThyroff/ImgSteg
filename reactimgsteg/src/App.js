@@ -10,6 +10,7 @@ import { DataEncryptor } from './utils/DataEncryptor';
 import { ByteArrayToHex } from './utils/ByteArrayToHex';
 import { triggerDownload } from './utils/TriggerDownload';
 import { ByteArrayWriter } from './utils/ByteArrayWriter';
+import { ByteArrayReader } from './utils/ByteArrayReader';
 import { getImageDataFromImageFile, createImageFileFromImageData } from './utils/ImageToImageDataConverter';
 
 function App() {
@@ -34,11 +35,11 @@ function App() {
     setSecretInputFile(acceptedFiles[0]);
   }
 
-  async function encryptAndEmbed(secretInputFile, imgInputFile, seed) {
+  async function hide(secretInputFile, imgInputFile, seed) {
     try {
       // Convert the file to a Uint8Array and wait for the operation to complete
       const byteArray = await convertFileToUint8Array(secretInputFile);
-      console.log("Byte array length of the input file: ", byteArray.length);
+
       // Encrypt the data and wait for the encryption to complete
       const encryptedData = await DataEncryptor.encryptData(byteArray, seed);
 
@@ -49,10 +50,32 @@ function App() {
       const imgDataNew = ByteArrayWriter.writeByteArrayIntoImage(encryptedData, imageData);
 
       // Create a new image file from the modified image data and wait for the file to be created
-      const newImage = await createImageFileFromImageData(imgDataNew, "NewImage.png");
+      const newImage = await createImageFileFromImageData(imgDataNew, "img_containing_secret_data.png");
 
       // Trigger the download of the new image
       triggerDownload(newImage);
+    } catch (error) {
+      // If an error occurs in any of the above steps, log it
+      console.error('Error:', error);
+    }
+  }
+
+  async function reveal(imgInputFile, seed) {
+    try {
+      // Get the image data from the image file and wait for the operation to complete
+      const imageData = await getImageDataFromImageFile(imgInputFile);
+
+      // Extract the encrypted data from the image data
+      const encryptedData = ByteArrayReader.readByteArrayFromImage(imageData);
+
+      // Decrypt the data and wait for the decryption to complete
+      const decryptedData = await DataEncryptor.decryptData(encryptedData, seed);
+
+      // Convert the decrypted data to a file and wait for the operation to complete
+      const decryptedFile = await convertUint8ArrayToFile(decryptedData, "decryptedFile_change_file_ending.aaa")
+
+      // Trigger the download of the decrypted file
+      triggerDownload(decryptedFile);
     } catch (error) {
       // If an error occurs in any of the above steps, log it
       console.error('Error:', error);
@@ -70,36 +93,16 @@ function App() {
 
     //TODO do checks if the files are matching the theoretical requirements and display error msgs
 
+    const seed = await imageToSeed(seedInputFile);
+    console.log("Hash value of the seed image: " + ByteArrayToHex.bytesToHex(seed)); // This is the SHA-256 hash of the image
 
     if (toggleState) {
       console.log('Reveal');
-      /*
-      const decryptedData = await DataEncryptor.decryptData(encryptedData, seed);
-      const decryptedFile = await convertUint8ArrayToFile(decryptedData, "decryptedFile_change_file_ending.aaa")
-
-      triggerDownload(decryptedFile);*/
+      reveal(imgInputFile, seed);
     } else {
       console.log('Hide');
-      const seed = await imageToSeed(seedInputFile);
-      console.log("Hash value of the seed image: " + ByteArrayToHex.bytesToHex(seed)); // This is the SHA-256 hash of the image
-
-      encryptAndEmbed(secretInputFile, imgInputFile, seed);
+      hide(secretInputFile, imgInputFile, seed);
     }
-
-    /*// Example processing logic: creating a new file to download
-    const processedData = new Blob([`Processed content from ${inputFile.name} and ${seedFile.name}`], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(processedData);
-
-    // Creating a temporary anchor element to trigger download
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'processed.txt'; // Name of the new file to be downloaded
-    document.body.appendChild(a);
-    a.click();
-
-    // Cleanup
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);*/
   };
 
   const handleToggle = (state) => {
