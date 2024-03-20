@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #3c414d;
 }
 
 .App-logo {
@@ -7,7 +8,25 @@
   pointer-events: none;
   bottom: 0;
   right: 0;
+  margin-bottom: 20px;
   position: absolute;
+}
+
+.App-footer {
+  text-align: center;
+  background-color: #3c414d;
+  position: absolute;
+  min-height: 50px;
+  width: 100%;
+}
+
+.gh {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 20px;
+  color: white;
+  height: 5vmin;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -17,8 +36,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 95vh;
+  background-color: #3c414d;
+  min-height: 90vh;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   /* Creates two columns of equal width */

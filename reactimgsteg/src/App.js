@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MyDropzone from './components/MyDropzone';
 import MyToggle from './components/MyToggle';
 import logo from './logo.svg';
+import gh from './GitHub_Logo_White.png';
 import rightarrow from './rightarrow.svg';
 import './App.css';
 import { imageToSeed } from './utils/ImageToSeed';
@@ -137,10 +138,14 @@ function App() {
           {/* Process button */}
           <button className="process-button" onClick={process}>Process</button>
         </div>
-
+      </header >
+      <footer className="App-footer">
+        <a href="https://github.com/JThyroff/ImgSteg" target='_blank' rel='noopener noreferrer'>
+          <img src={gh} className='gh' alt='github' />
+        </a>
         {/* You might want to place the logo outside of the header or in its own grid cell */}
         <img src={logo} className="App-logo" alt="logo" />
-      </header >
+      </footer>
     </div >
   );
 }

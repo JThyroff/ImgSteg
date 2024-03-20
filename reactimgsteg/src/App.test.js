@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
+
+//TODO - Add all the functional tests from java source code
 test('renders dropzones', () => {
   render(<App />);
   const dropzoneImageText = screen.getByText(/Drop input image*/i);
