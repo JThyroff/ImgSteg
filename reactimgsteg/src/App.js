@@ -115,12 +115,12 @@ function App() {
       <header className="App-header">
         {/* Top-left grid cell */}
         <div className="grid-item">
-          <MyDropzone onDrop={handleDropImage} accept="image/*" text="Drop input image here. Must be of type *.png." />
+          <MyDropzone onDrop={handleDropImage} accept="image/png" text="Drop input image here. Must be of type *.png." />
         </div>
 
         {/* Top-right grid cell */}
         <div className="grid-item">
-          <MyDropzone onDrop={handleDropSeed} accept="image/*" text="Drop seed image here. Must be of type *.png." />
+          <MyDropzone onDrop={handleDropSeed} accept="image/png" text="Drop seed image here. Must be of type *.png." />
         </div>
 
         {/* Bottom-left grid cell */}

@@ -34,7 +34,7 @@ const MyDropzone = ({ onDrop, accept, text }) => {
 
     const { getRootProps, getInputProps } = useDropzone({
         onDropAccepted,
-        accept
+        accept: accept, //parametrized accept mime type
     });
 
     return (
