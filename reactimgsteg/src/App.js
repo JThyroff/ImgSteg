@@ -34,6 +34,30 @@ function App() {
     setSecretInputFile(acceptedFiles[0]);
   }
 
+  async function encryptAndEmbed(secretInputFile, imgInputFile, seed) {
+    try {
+      // Convert the file to a Uint8Array and wait for the operation to complete
+      const byteArray = await convertFileToUint8Array(secretInputFile);
+      console.log("Byte array length of the input file: ", byteArray.length);
+      // Encrypt the data and wait for the encryption to complete
+      const encryptedData = await DataEncryptor.encryptData(byteArray, seed);
+
+      // Get the image data from the image file and wait for the operation to complete
+      const imageData = await getImageDataFromImageFile(imgInputFile);
+
+      // Write the encrypted data into the image data
+      const imgDataNew = ByteArrayWriter.writeByteArrayIntoImage(encryptedData, imageData);
+
+      // Create a new image file from the modified image data and wait for the file to be created
+      const newImage = await createImageFileFromImageData(imgDataNew, "NewImage.png");
+
+      // Trigger the download of the new image
+      triggerDownload(newImage);
+    } catch (error) {
+      // If an error occurs in any of the above steps, log it
+      console.error('Error:', error);
+    }
+  }
 
 
   const process = async () => {
@@ -59,27 +83,7 @@ function App() {
       const seed = await imageToSeed(seedInputFile);
       console.log("Hash value of the seed image: " + ByteArrayToHex.bytesToHex(seed)); // This is the SHA-256 hash of the image
 
-      //encrypt the secret file with the seed
-      const byteArray = await convertFileToUint8Array(secretInputFile);
-      const encryptedData = await DataEncryptor.encryptData(byteArray, seed);
-
-      //write the resulting encrypted data into the input image
-      getImageDataFromImageFile(imgInputFile).then(imageData => {
-        // Use imageData here
-        const imgDataNew = ByteArrayWriter.writeByteArrayIntoImage(encryptedData, imageData)
-        createImageFileFromImageData(imgDataNew, "NewImage.png").then(newImage => {
-          triggerDownload(newImage)
-        }).catch(error => {
-          console.error('Error processing image file:', error);
-        });
-      }).catch(error => {
-        console.error('Error processing image file:', error);
-      });
-
-      //const newImgData = ByteArrayWriter.writeByteArrayIntoImage(encryptedData, imgData)
-
-      //const newImage = createImageFileFromImageData(imgData, "NewImage.png")
-      //triggerDownload(newImage)
+      encryptAndEmbed(secretInputFile, imgInputFile, seed);
     }
 
     /*// Example processing logic: creating a new file to download
