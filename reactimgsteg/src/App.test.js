@@ -3,8 +3,11 @@ import App from './App';
 
 test('renders dropzones', () => {
   render(<App />);
-  const dropzoneInputText = screen.getByText(/Drop input*/i);
+  const dropzoneImageText = screen.getByText(/Drop input image*/i);
   const dropzoneSeedText = screen.getByText(/Drop seed image*/i);
-  expect(dropzoneInputText).toBeInTheDocument();
+  const dropzoneSecretText = screen.getByText(/Drop input file*/i);
+
+  expect(dropzoneImageText).toBeInTheDocument();
   expect(dropzoneSeedText).toBeInTheDocument();
+  expect(dropzoneSecretText).toBeInTheDocument();
 });
