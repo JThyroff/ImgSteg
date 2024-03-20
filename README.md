@@ -20,7 +20,7 @@ Nobody is going to clone java code, right? And steganograhy is not secure either
 
 ### Usage
 
-#### Challenge
+#### Challenge: Reveal the secret data\
 
 Do you see that folder called [Example_Images](./Example_Images/)? There is a picture of a beatiful sunrise that I took in the harbor of Tallinn. And it contains some secret data (I let you know that it's a txt file). Can you reveal it using the Live Demo? Hint: You will need to google "Sonnenblume", go to the German wikipedia article and use the title image.
 
@@ -37,9 +37,13 @@ Do you see that folder called [Example_Images](./Example_Images/)? There is a pi
 8) Open the file to see it's content! :D
 9) Tell your friends and send hidden messages like a spy!
 
+#### Hide
+
+Hiding a file works pretty similar. Choose an arbitrary small (< 70kB see Technical Note below) secret data file, Input Image and Seed Image. Fill in the fields in the UI and switch the toggle to Hide. Press "Process". The download should be triggered. The new image looks identical to the input image but contains the secret data now. You can pass this to a friend (uncompressed!) together with the information which seed image you used (sonnenblume.png in the upper example). The cool thing is that the actual data is only stored in the input image - the seed image is just used for revealing and can be any publicly available image from the internet!
+
 #### Security Note
 
-*Steganography is never a replacement for cryptography. And it never even reaches similar security levels as cryptography* This program is solely designed for educational and fun purposes. For this example implementation the information is only as secure as the information that the two selected images belong together (very little security).
+*Steganography is never a replacement for cryptography. And it never even reaches similar security levels as cryptography.* This program is solely designed for educational and fun purposes. For this example implementation the information is only as secure as the information that the two selected images belong together (very little security).
 
 #### Technical Note
 
