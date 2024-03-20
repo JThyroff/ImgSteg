@@ -20,7 +20,7 @@ Nobody is going to clone java code, right? And steganograhy is not secure either
 
 ### Usage
 
-#### Challenge: Reveal the secret data\
+#### Challenge: Reveal the secret data!
 
 Do you see that folder called [Example_Images](./Example_Images/)? There is a picture of a beatiful sunrise that I took in the harbor of Tallinn. And it contains some secret data (I let you know that it's a txt file). Can you reveal it using the Live Demo? Hint: You will need to google "Sonnenblume", go to the German wikipedia article and use the title image.
 
