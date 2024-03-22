@@ -27,13 +27,12 @@ Do you see that folder called [Example_Images](./Example_Images/)? There is a pi
 1) Download the [sunrise image](./Example_Images/img_containing_secret_data.png) from the [Example_Images](./Example_Images/) folder.
 2) Google "Sonnenblume". Go to the German Wikipedia article. Click on the title image. Right click -> Save Image as ...
 (the folder [Example_Images](./Example_Images/) contains a copy of that image in case it changes in the future. You can use that as well).
-3) Rename the file ending of the sonnenblume.jpg to *.png. Resulting in sonnenlume.png.
-4) Go to the live demo.
-5) Fill in the sunrise image as "input image" in the top left corner. Fill in sonnenblume.png as "seed image" in the top right.
-6) Switch the toggle to "Reveal". The "input file" stays empty (For hiding only).
-7) Hit the Process button. If everything goes fine (javascript has to be enabled), the secret data gets revealed and a download of the revealed file will be triggered. In order to open the file you have to change it's file ending to the original one. In our case rename it to *.txt. Resulting in decryptedFile_change_file_ending.txt instead of decryptedFile_change_file_ending.aaa. (on windows make sure that your file explorer displays file endings to be able to change them).
-8) Open the file to see it's content! :D
-9) Tell your friends and send hidden messages like a spy!
+3) Go to the live demo.
+4) Fill in the sunrise image as "input image" in the top left corner. Fill in sonnenblume.jpg as "seed image" in the top right.
+5) Switch the toggle to "Reveal". The "input file" stays empty (For hiding only).
+6) Hit the Process button. If everything goes fine (javascript has to be enabled), the secret data gets revealed and a download of the revealed file will be triggered. In order to open the file you have to change it's file ending to the original one. In our case rename it to *.txt. Resulting in decryptedFile_change_file_ending.txt instead of decryptedFile_change_file_ending.aaa. (on windows make sure that your file explorer displays file endings to be able to change them).
+7) Open the file to see it's content! :D
+8) Tell your friends and send hidden messages like a spy!
 
 ### Hide
 
