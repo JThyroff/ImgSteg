@@ -25,7 +25,7 @@ Do you see that folder called [Example_Images](./Example_Images/)? There is a pi
 ### Solution
 
 1) Download the [sunrise image](./Example_Images/img_containing_secret_data.png) from the [Example_Images](./Example_Images/) folder.
-2) Google "Sonnenblume". Go to the German Wikipedia article. Click on the title image (to have the full resolution). Right click -> Save Image as ...
+2) Google "Sonnenblume". Go to the German Wikipedia article. Right click on the title image -> Save Image as ... . It is important that you download the displayed thumbnail image (resolution 300x400) and not any other resolution. 
 (the folder [Example_Images](./Example_Images/) contains a copy of that image in case it changes in the future. You can use that as well).
 3) Go to the live demo.
 4) Fill in the sunrise image as "input image" in the top left corner. Fill in sonnenblume.jpg as "seed image" in the top right.
