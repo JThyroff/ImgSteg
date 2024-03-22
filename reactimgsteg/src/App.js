@@ -64,18 +64,23 @@ function App() {
   async function reveal(imgInputFile, seed) {
     try {
       // Get the image data from the image file and wait for the operation to complete
+      console.log('Getting image data from image file')
       const imageData = await getImageDataFromImageFile(imgInputFile);
 
       // Extract the encrypted data from the image data
+      console.log('Extracting encrypted data from image data')
       const encryptedData = ByteArrayReader.readByteArrayFromImage(imageData);
 
       // Decrypt the data and wait for the decryption to complete
+      console.log('Decrypting data')
       const decryptedData = await DataEncryptor.decryptData(encryptedData, seed);
 
       // Convert the decrypted data to a file and wait for the operation to complete
+      console.log('Converting decrypted data to file')
       const decryptedFile = await convertUint8ArrayToFile(decryptedData, "decryptedFile_change_file_ending.aaa")
 
       // Trigger the download of the decrypted file
+      console.log('Triggering download of decrypted file')
       triggerDownload(decryptedFile);
     } catch (error) {
       // If an error occurs in any of the above steps, log it
