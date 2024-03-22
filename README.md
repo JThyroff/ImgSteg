@@ -20,12 +20,12 @@ Nobody is going to clone java code, right? And steganograhy is not secure either
 
 ### Challenge: Reveal 🔍 the secret data! 
 
-Do you see that folder called [Example_Images](./Example_Images/)? There is a picture of a beautiful sunrise that I took in the harbor of Tallinn. And it contains some secret data (I let you know that it's a txt file). Can you reveal it using the Live Demo? Hint: You will need to google "Sonnenblume" 🌻, go to the German wikipedia article and use the title image.
+Do you see that folder called [Example_Images](./Example_Images/)? There is a picture of a beautiful sunrise that I took in the harbor of Tallinn. And it contains some secret data (I let you know that it's a txt file). Can you reveal it using the Live Demo? Hint: You will need to google "Sonnenblume" 🌻, go to the German wikipedia article and use the title image in the smallest resolution.
 
 ### Solution
 
 1) Download the [sunrise image](./Example_Images/img_containing_secret_data.png) from the [Example_Images](./Example_Images/) folder.
-2) Google "Sonnenblume". Go to the German Wikipedia article. Right click on the title image -> Save Image as ... . It is important that you download the displayed thumbnail image (resolution 300x400) and not any other resolution. 
+2) Google "Sonnenblume". Go to the German Wikipedia article. Click on the sunflower image. Click the download button and select the smallest image resolution (360x480 pixels) . It is important that you download exactly that resolution and not any other. 
 (the folder [Example_Images](./Example_Images/) contains a copy of that image in case it changes in the future. You can use that as well).
 3) Go to the live demo.
 4) Fill in the sunrise image as "input image" in the top left corner. Fill in sonnenblume.jpg as "seed image" in the top right.
