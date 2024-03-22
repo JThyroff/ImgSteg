@@ -4,13 +4,13 @@ While taking a network security class at university (where i learned a lot about
 
 I immediately liked the idea of hiding information inside of images in particular. And came up with a prototype in java. Small functional GUI, algorithm more complicated than necessary and only able to hide text. After a long break of development I came back to this project, with the goal to polish it a little more.
 
-## Working live demo here: [Project Page](https://jthyroff.github.io/ImgSteg/)
+## Working live demo here 🚀: [Project Page](https://jthyroff.github.io/ImgSteg/)
 
 Go to section "Live Demo" for explanation.
 
 ## Concept
 
-The basic idea of this program is to hide information in images. Since the least significant bits per color channel are indeed not really significant for visual perception either, this can effectively be used as real storage capacity - making things possible that you never thought about before :D. Just hiding information in one image is rather boring - so we use another image as a encryption seed before storing the encrypted data in a second image. Spy movies are getting real!
+The basic idea of this program is to hide information in images. Since the least significant bits per color channel are indeed not really significant for visual perception either, this can effectively be used as real storage capacity - making things possible that you never thought about before :D. Just hiding information in one image is rather boring - so we use another image as a encryption seed before storing the encrypted data in a second image. Spy movies 🕵️ are getting real! 
 
 ![concept](concept.png)
 
@@ -18,9 +18,9 @@ The basic idea of this program is to hide information in images. Since the least
 
 Nobody is going to clone java code, right? And steganograhy is not secure either - so i might as well build a web app. I made the effort to translate everything into javascript and programmed a minimum functional UI. Data is not stored and processed client-side.
 
-### Challenge: Reveal the secret data!
+### Challenge: Reveal the secret data 🔍! 
 
-Do you see that folder called [Example_Images](./Example_Images/)? There is a picture of a beautiful sunrise that I took in the harbor of Tallinn. And it contains some secret data (I let you know that it's a txt file). Can you reveal it using the Live Demo? Hint: You will need to google "Sonnenblume", go to the German wikipedia article and use the title image.
+Do you see that folder called [Example_Images](./Example_Images/)? There is a picture of a beautiful sunrise that I took in the harbor of Tallinn. And it contains some secret data (I let you know that it's a txt file). Can you reveal it using the Live Demo? Hint: You will need to google "Sonnenblume" 🌻, go to the German wikipedia article and use the title image.
 
 ### Solution
 
