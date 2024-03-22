@@ -126,7 +126,7 @@ function App() {
 
         {/* Top-right grid cell */}
         <div className="grid-item">
-          <MyDropzone onDrop={handleDropSeed} accept="image/png" text="Drop seed image here. Must be of type *.png." />
+          <MyDropzone onDrop={handleDropSeed} accept="image/png image/jpg" text="Drop seed image here. Must be of type *.png or *.jpg" />
         </div>
 
         {/* Bottom-left grid cell */}

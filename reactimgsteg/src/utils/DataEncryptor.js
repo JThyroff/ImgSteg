@@ -1,3 +1,4 @@
+import { ByteArrayToHex } from "./ByteArrayToHex";
 export class DataEncryptor {
     static async encryptData(data, seed) {
         // Import the key for encryption
@@ -28,6 +29,8 @@ export class DataEncryptor {
     }
 
     static async decryptData(combinedData, seed) {
+        const hashBuffer = await crypto.subtle.digest('SHA-256', combinedData)
+        console.log("Combined Data Hash: " + ByteArrayToHex.bytesToHex(new Uint8Array(hashBuffer)));
         // Extract the IV and the encrypted data
         const iv = combinedData.slice(0, 16);
         const encryptedData = combinedData.slice(16);
